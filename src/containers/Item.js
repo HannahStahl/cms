@@ -203,7 +203,11 @@ export default function Item(props) {
     if (nonImageFound) {
       alert(`Please upload image files only.`);
     } else {
-      setItemPhotos(itemPhotos.concat(Array.from(event.target.files)));
+      if (props.clientConfig.itemType === 'photo') {
+        setItemPhotos(files);
+      } else {
+        setItemPhotos(itemPhotos.concat(files));
+      }
     }
   }
 
@@ -444,8 +448,14 @@ export default function Item(props) {
             </div>
             <div className="right-half">
               <Form.Group controlId="file">
-                <Form.Label>Images</Form.Label>
-                <Form.Control onChange={handleFileChange} type="file" multiple />
+                <Form.Label>
+                  {`Image${props.clientConfig.itemType === 'photo' ? '' : 's'}`}
+                </Form.Label>
+                <Form.Control
+                  onChange={handleFileChange}
+                  type="file"
+                  multiple={props.clientConfig.itemType !== 'photo'}
+                />
               </Form.Group>
               {itemPhotos && itemPhotos.length > 0 && (
                 <DraggablePhotosGrid updateItems={setItemPhotos} items={itemPhotos} />
