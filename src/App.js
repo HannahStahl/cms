@@ -41,12 +41,8 @@ function App(props) {
       <div className="App container">
         {isAuthenticated && (
           <Navbar collapseOnSelect expand="lg" fixed="top">
-            <Navbar.Brand href="/">
-            <img
-              alt="Logo"
-              src={`${process.env.PUBLIC_URL}/logo.png`}
-              height="50"
-            />
+            <Navbar.Brand>
+              <Nav.Link href="/">Home</Nav.Link>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse>

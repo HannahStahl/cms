@@ -7,8 +7,12 @@
   background-color: white;
 }
 
-.App .navbar-brand {
-  font-weight: bold;
+.App .navbar-brand .nav-link {
+  color: rgba(0, 0, 0, .5);
+}
+
+.App .navbar-brand .nav-link:hover {
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .App .navbar-collapse {
