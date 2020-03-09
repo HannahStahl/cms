@@ -31,7 +31,7 @@ const prod = {
     APP_CLIENT_ID: "7i6bi5n6i7l36vopjn1ioj8576",
     IDENTITY_POOL_ID: "us-east-1:0076c7d8-65d8-4f2f-b4e8-476048d8b7de"
   },
-  cloudfrontURL: "https://d3v8t7grqk8z3g.cloudfront.net", // TODO change to Shana's user ID Cloudfront & pull from DB config
+  cloudfrontURL: "https://dd7h6rpqhh194.cloudfront.net", // TODO change to Shana's user ID Cloudfront & pull from DB config
 };
 
 // Default to dev if not set
