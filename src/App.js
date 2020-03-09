@@ -5,10 +5,12 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Routes from "./Routes";
 import "./App.css";
+import config from "./config";
 
 function App(props) {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
+  const [clientConfig, setClientConfig] = useState({});
 
   useEffect(() => {
     onLoad();
@@ -17,7 +19,9 @@ function App(props) {
   async function onLoad() {
     try {
       await Auth.currentSession();
+      const clientConfigFromDB = await fetch(config.clientConfigURL).then(response => response.json());
       userHasAuthenticated(true);
+      setClientConfig(clientConfigFromDB);
     }
     catch(e) {
       if (e !== 'No current user') {
@@ -30,9 +34,7 @@ function App(props) {
 
   async function handleLogout() {
     await Auth.signOut();
-
     userHasAuthenticated(false);
-
     props.history.push("/");
   }
 
@@ -61,7 +63,7 @@ function App(props) {
           </Navbar>
         )}
         <div style={{ paddingTop: isAuthenticated ? 100 : 0 }}>
-          <Routes appProps={{ isAuthenticated, userHasAuthenticated }} />
+          <Routes appProps={{ isAuthenticated, userHasAuthenticated, clientConfig, setClientConfig }} />
         </div>
       </div>
     )

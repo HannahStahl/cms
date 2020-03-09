@@ -5,4 +5,5 @@
 .Home .categories .page-header {
   border-bottom: none;
   margin-bottom: 0px;
+  text-transform: capitalize;
 }

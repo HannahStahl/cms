@@ -42,7 +42,7 @@ export default function Category(props) {
         ]);
         const { categoryName, categoryPhoto } = category;
         if (categoryPhoto) {
-          category.categoryPhotoURL = `${config.cloudfrontURL}/${config.userID}/${categoryPhoto}`;
+          category.categoryPhotoURL = `${config.cloudfrontURL}/${clientConfig.userId}/${categoryPhoto}`;
         }
         items.forEach((item, i) => {
           const photoIds = photosForItems
@@ -154,15 +154,19 @@ export default function Category(props) {
         originalItems={items}
         newItemURL={`/items/new/${props.match.params.id}`}
         short
+        clientConfig={clientConfig}
       />
     );
   }
 
   function renderItems() {
+    const { clientConfig } = props;
     return (
       <div className="items">
         <Form.Group>
-          <Form.Label>Products</Form.Label>
+          <Form.Label className="items-list-label">
+            {`${clientConfig.itemType}s`}
+          </Form.Label>
           <ListGroup>
             {renderItemsList(items)}
           </ListGroup>
@@ -200,6 +204,8 @@ export default function Category(props) {
       </Form>
     );
   }
+
+  const { clientConfig } = props;
 
   return (
     <div className="Category">
@@ -241,7 +247,9 @@ export default function Category(props) {
       {!category ? <LoadingSpinner /> : (
         <>
           {items.filter((item) => item.itemPublished).length === 0 && (
-            <p className="note">Categories can be moved out of Draft state once they have at least one published product.</p>
+            <p className="note">
+              {`Categories can be moved out of Draft state once they have at least one published ${clientConfig.itemType}.`}
+            </p>
           )}
           <div className="content">
             {renderCategoryDetails()}

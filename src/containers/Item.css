@@ -12,6 +12,10 @@
   min-width: 300px;
 }
 
+.Item .page-header h1 {
+  text-transform: capitalize;
+}
+
 @media all and (min-width: 800px) {
   .Item .form-fields .left-half {
     padding-right: 60px;

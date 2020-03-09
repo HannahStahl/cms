@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import LoaderButton from "../components/LoaderButton";
 import { useFormFields } from "../libs/hooksLib";
 import "./Login.css";
+import config from "../config";
 
 export default function Login(props) {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +19,9 @@ export default function Login(props) {
     setIsLoading(true);
     try {
       await Auth.signIn(fields.email, fields.password);
+      const clientConfigFromDB = await fetch(config.clientConfigURL);
       props.userHasAuthenticated(true);
+      props.setClientConfig(clientConfigFromDB);
     } catch (e) {
       alert(e.message);
       setIsLoading(false);

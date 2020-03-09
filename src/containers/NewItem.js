@@ -126,7 +126,8 @@ export default function NewItem(props) {
 
   async function handleSubmit(itemPublished) {
     if (itemNameExists()) {
-      window.alert('A product by this name already exists in this category.');
+      const { clientConfig } = props;
+      window.alert(`A ${clientConfig.itemType} by this name already exists in this category.`);
       return;
     }
     let updatedItemPhotos = itemPhotos.map(itemPhoto => ({
@@ -231,10 +232,12 @@ export default function NewItem(props) {
     return e.target.value.includes('_') || e.target.value.includes('?');
   }
 
+  const { clientConfig } = props;
+
   return (
     <div className="NewItem">
       <div className="page-header">
-        <h1>Create Product</h1>
+        <h1>{`Create ${clientConfig.itemType}`}</h1>
         <div className="form-buttons">
           <LoaderButton
             onClick={() => handleSubmit(false)}

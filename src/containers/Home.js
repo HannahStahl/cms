@@ -29,6 +29,7 @@ export default function Home(props) {
   }
 
   function renderCategoriesList(categories) {
+    const { clientConfig } = props;
     return (
       <div>
         <DraggableItemsList
@@ -36,20 +37,29 @@ export default function Home(props) {
           itemTypePlural='categories'
           originalItems={categories}
           newItemURL='/categories/new'
+          clientConfig={clientConfig}
         />
       </div>
     );
   }
 
   function renderLander() {
-    return <Login isAuthenticated={props.isAuthenticated} userHasAuthenticated={props.userHasAuthenticated} />;
+    return (
+      <Login
+        isAuthenticated={props.isAuthenticated}
+        userHasAuthenticated={props.userHasAuthenticated}
+        clientConfig={props.clientConfig}
+        setClientConfig={props.setClientConfig}
+      />
+    );
   }
 
   function renderCategories() {
+    const { clientConfig } = props;
     return (
       <div className="categories">
         <div className="page-header">
-          <h1>Product Categories</h1>
+          <h1>{`${clientConfig.itemType} Categories`}</h1>
         </div>
         {!isLoading && renderCategoriesList(categories)}
       </div>

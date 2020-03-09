@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import LoaderButton from "../components/LoaderButton";
 import { useFormFields } from "../libs/hooksLib";
 import "./Signup.css";
+import config from "../config";
 
 export default function Signup(props) {
   const [fields, handleFieldChange] = useFormFields({
@@ -53,8 +54,9 @@ export default function Signup(props) {
     try {
       await Auth.confirmSignUp(fields.email, fields.confirmationCode);
       await Auth.signIn(fields.email, fields.password);
-
+      const clientConfigFromDB = await fetch(config.clientConfigURL);
       props.userHasAuthenticated(true);
+      props.setClientConfig(clientConfigFromDB);
       props.history.push("/");
     } catch (e) {
       alert(e.message);

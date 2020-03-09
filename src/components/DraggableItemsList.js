@@ -16,7 +16,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 });
 
 export default function DraggableItemsList({
-  originalItems, itemType, itemTypePlural, newItemURL, short,
+  originalItems, itemType, itemTypePlural, newItemURL, short, clientConfig,
 }) {
   const [items, setItems] = useState(originalItems);
   useEffect(() => { setItems(originalItems); }, [originalItems])
@@ -66,7 +66,9 @@ export default function DraggableItemsList({
                         <img
                           className="item-photo"
                           alt={item[`${itemType}Name`]}
-                          src={item[`${itemType}Photo`] ? `${config.cloudfrontURL}/${config.userID}/${item[`${itemType}Photo`]}` : `${process.env.PUBLIC_URL}/placeholder.jpg`}
+                          src={item[`${itemType}Photo`] ? (
+                            `${config.cloudfrontURL}/${clientConfig.userId}/${item[`${itemType}Photo`]}`
+                          ) : `${process.env.PUBLIC_URL}/placeholder.jpg`}
                         />
                       </a>
                       <a className="item-name" href={`/${itemTypePlural}/${item[`${itemType}Id`]}`}>

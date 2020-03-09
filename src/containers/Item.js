@@ -111,7 +111,7 @@ export default function Item(props) {
           const itemPhotos = [];
           photosForItem.forEach((photoForItem) => {
             const fileName = photos.find(photo => photo.photoId === photoForItem.photoId).photoName;
-            itemPhotos.push({ name: fileName, url: `${config.cloudfrontURL}/${config.userID}/${fileName}` });
+            itemPhotos.push({ name: fileName, url: `${config.cloudfrontURL}/${clientConfig.userId}/${fileName}` });
           });
           setItemPhotos(itemPhotos);
         }
@@ -256,7 +256,8 @@ export default function Item(props) {
 
   async function handleSubmit(itemPublished) {
     if (itemName.toLowerCase() !== item.itemName.toLowerCase() && itemNameExists()) {
-      window.alert('A product by this name already exists in this category.');
+      const { clientConfig } = props;
+      window.alert(`A ${clientConfig.itemType} by this name already exists in this category.`);
       return;
     }
     let updatedItemPhotos = itemPhotos.map(itemPhoto => ({
@@ -321,17 +322,14 @@ export default function Item(props) {
 
   async function handleDelete(event) {
     event.preventDefault();
-
+    const { clientConfig } = props;
     const confirmed = window.confirm(
-      "Are you sure you want to delete this product?"
+      `Are you sure you want to delete this ${clientConfig.itemType}?`
     );
-
     if (!confirmed) {
       return;
     }
-
     setIsDeleting(true);
-
     try {
       await deleteItem();
       props.history.push(`/categories/${categoryId}`);
@@ -345,10 +343,12 @@ export default function Item(props) {
     return e.target.value.includes('_') || e.target.value.includes('?');
   }
 
+  const { clientConfig } = props;
+
   return (
     <div className="Item">
       <div className="page-header">
-        <h1>Edit Product</h1>
+        <h1>{`Edit ${clientConfig.itemType}`}</h1>
         {item && (
           <div className="form-buttons">
             <LoaderButton
