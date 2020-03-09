@@ -74,8 +74,6 @@ export default function NewCategory(props) {
     return e.target.value.includes('_') || e.target.value.includes('?');
   }
 
-  const { clientConfig } = props;
-
   return (
     <div className="NewCategory">
       <div className="page-header">
@@ -94,7 +92,7 @@ export default function NewCategory(props) {
         </div>
       </div>
       <p className="note">
-        {`Categories can be moved out of Draft state once they have at least one published ${clientConfig.itemType}.`}
+        {`Categories can be moved out of Draft state once they have at least one published ${props.clientConfig.itemType}.`}
       </p>
       <Form>
         <Form.Group controlId="categoryName">

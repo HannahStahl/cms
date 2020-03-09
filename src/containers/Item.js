@@ -111,7 +111,7 @@ export default function Item(props) {
           const itemPhotos = [];
           photosForItem.forEach((photoForItem) => {
             const fileName = photos.find(photo => photo.photoId === photoForItem.photoId).photoName;
-            itemPhotos.push({ name: fileName, url: `${config.cloudfrontURL}/${clientConfig.userId}/${fileName}` });
+            itemPhotos.push({ name: fileName, url: `${config.cloudfrontURL}/${props.clientConfig.userId}/${fileName}` });
           });
           setItemPhotos(itemPhotos);
         }
@@ -164,22 +164,27 @@ export default function Item(props) {
     }
 
     onLoad();
-  }, [props.match.params.id]);
+  }, [props.match.params.id, props.clientConfig.userId]);
 
   function validateDraftForm() {
     return itemName.length > 0;
   }
 
   function validatePublishForm() {
-    return (
+    let valid = (
       itemName.length > 0
       && itemDescription.length > 0
-      && itemPrice > 0
-      && (!itemOnSale || itemSalePrice > 0)
-      && (itemSizes && itemSizes.length > 0)
-      && (itemColors && itemColors.length > 0)
       && (itemPhotos && itemPhotos.length > 0)
     );
+    if (props.clientConfig.eCommerce) {
+      valid = valid && (
+        itemPrice > 0
+        && (!itemOnSale || itemSalePrice > 0)
+        && (itemSizes && itemSizes.length > 0)
+        && (itemColors && itemColors.length > 0)
+      );
+    }
+    return valid;
   }
 
   function handleFileChange(event) {
@@ -256,8 +261,7 @@ export default function Item(props) {
 
   async function handleSubmit(itemPublished) {
     if (itemName.toLowerCase() !== item.itemName.toLowerCase() && itemNameExists()) {
-      const { clientConfig } = props;
-      window.alert(`A ${clientConfig.itemType} by this name already exists in this category.`);
+      window.alert(`A ${props.clientConfig.itemType} by this name already exists in this category.`);
       return;
     }
     let updatedItemPhotos = itemPhotos.map(itemPhoto => ({
@@ -322,9 +326,8 @@ export default function Item(props) {
 
   async function handleDelete(event) {
     event.preventDefault();
-    const { clientConfig } = props;
     const confirmed = window.confirm(
-      `Are you sure you want to delete this ${clientConfig.itemType}?`
+      `Are you sure you want to delete this ${props.clientConfig.itemType}?`
     );
     if (!confirmed) {
       return;
@@ -343,12 +346,10 @@ export default function Item(props) {
     return e.target.value.includes('_') || e.target.value.includes('?');
   }
 
-  const { clientConfig } = props;
-
   return (
     <div className="Item">
       <div className="page-header">
-        <h1>{`Edit ${clientConfig.itemType}`}</h1>
+        <h1>{`Edit ${props.clientConfig.itemType}`}</h1>
         {item && (
           <div className="form-buttons">
             <LoaderButton
@@ -412,30 +413,34 @@ export default function Item(props) {
                   onChange={e => setItemDescription(e.target.value)}
                 />
               </Form.Group>
-              <Form.Group controlId="itemPrice">
-                <Form.Label>Price</Form.Label>
-                <Form.Control
-                  value={itemPrice}
-                  type="number"
-                  onChange={e => setItemPrice(e.target.value)}
-                />
-              </Form.Group>
-              <Form.Group controlId="itemSalePrice">
-                <Form.Label>Sale Price</Form.Label>
-                <Form.Control
-                  value={itemSalePrice}
-                  type="number"
-                  onChange={e => setItemSalePrice(e.target.value)}
-                />
-              </Form.Group>
-              <Form.Group controlId="itemOnSale">
-                <Form.Check
-                  type="checkbox"
-                  checked={itemOnSale}
-                  onChange={e => setItemOnSale(e.target.checked)}
-                  label="On Sale"
-                />
-              </Form.Group>
+              {props.clientConfig.eCommerce && (
+                <>
+                  <Form.Group controlId="itemPrice">
+                    <Form.Label>Price</Form.Label>
+                    <Form.Control
+                      value={itemPrice}
+                      type="number"
+                      onChange={e => setItemPrice(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="itemSalePrice">
+                    <Form.Label>Sale Price</Form.Label>
+                    <Form.Control
+                      value={itemSalePrice}
+                      type="number"
+                      onChange={e => setItemSalePrice(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="itemOnSale">
+                    <Form.Check
+                      type="checkbox"
+                      checked={itemOnSale}
+                      onChange={e => setItemOnSale(e.target.checked)}
+                      label="On Sale"
+                    />
+                  </Form.Group>
+                </>
+              )}
             </div>
             <div className="right-half">
               <Form.Group controlId="file">
@@ -445,36 +450,40 @@ export default function Item(props) {
               {itemPhotos && itemPhotos.length > 0 && (
                 <DraggablePhotosGrid updateItems={setItemPhotos} items={itemPhotos} />
               )}
-              <Form.Group controlId="itemSizes">
-                <Form.Label>Sizes</Form.Label>
-                <CreatableSelect
-                  isMulti
-                  onChange={setItemSizes}
-                  options={sizeOptions}
-                  placeholder=""
-                  value={itemSizes}
-                />
-              </Form.Group>
-              <Form.Group controlId="itemColors">
-                <Form.Label>Colors</Form.Label>
-                <CreatableSelect
-                  isMulti
-                  onChange={setItemColors}
-                  options={colorOptions}
-                  placeholder=""
-                  value={itemColors}
-                />
-              </Form.Group>
-              <Form.Group controlId="itemTags">
-                <Form.Label>Tags</Form.Label>
-                <CreatableSelect
-                  isMulti
-                  onChange={setItemTags}
-                  options={tagOptions}
-                  placeholder=""
-                  value={itemTags}
-                />
-              </Form.Group>
+              {props.clientConfig.eCommerce && (
+                <>
+                  <Form.Group controlId="itemSizes">
+                    <Form.Label>Sizes</Form.Label>
+                    <CreatableSelect
+                      isMulti
+                      onChange={setItemSizes}
+                      options={sizeOptions}
+                      placeholder=""
+                      value={itemSizes}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="itemColors">
+                    <Form.Label>Colors</Form.Label>
+                    <CreatableSelect
+                      isMulti
+                      onChange={setItemColors}
+                      options={colorOptions}
+                      placeholder=""
+                      value={itemColors}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="itemTags">
+                    <Form.Label>Tags</Form.Label>
+                    <CreatableSelect
+                      isMulti
+                      onChange={setItemTags}
+                      options={tagOptions}
+                      placeholder=""
+                      value={itemTags}
+                    />
+                  </Form.Group>
+                </>
+              )}
             </div>
           </div>
         </Form>

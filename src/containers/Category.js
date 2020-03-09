@@ -42,7 +42,7 @@ export default function Category(props) {
         ]);
         const { categoryName, categoryPhoto } = category;
         if (categoryPhoto) {
-          category.categoryPhotoURL = `${config.cloudfrontURL}/${clientConfig.userId}/${categoryPhoto}`;
+          category.categoryPhotoURL = `${config.cloudfrontURL}/${props.clientConfig.userId}/${categoryPhoto}`;
         }
         items.forEach((item, i) => {
           const photoIds = photosForItems
@@ -62,7 +62,7 @@ export default function Category(props) {
       }
     }
     onLoad();
-  }, [props.match.params.id]);
+  }, [props.match.params.id, props.clientConfig.userId]);
 
   function validateDraftForm() {
     return categoryName.length > 0;
@@ -154,18 +154,17 @@ export default function Category(props) {
         originalItems={items}
         newItemURL={`/items/new/${props.match.params.id}`}
         short
-        clientConfig={clientConfig}
+        clientConfig={props.clientConfig}
       />
     );
   }
 
   function renderItems() {
-    const { clientConfig } = props;
     return (
       <div className="items">
         <Form.Group>
           <Form.Label className="items-list-label">
-            {`${clientConfig.itemType}s`}
+            {`${props.clientConfig.itemType}s`}
           </Form.Label>
           <ListGroup>
             {renderItemsList(items)}
@@ -204,8 +203,6 @@ export default function Category(props) {
       </Form>
     );
   }
-
-  const { clientConfig } = props;
 
   return (
     <div className="Category">
@@ -248,7 +245,7 @@ export default function Category(props) {
         <>
           {items.filter((item) => item.itemPublished).length === 0 && (
             <p className="note">
-              {`Categories can be moved out of Draft state once they have at least one published ${clientConfig.itemType}.`}
+              {`Categories can be moved out of Draft state once they have at least one published ${props.clientConfig.itemType}.`}
             </p>
           )}
           <div className="content">
