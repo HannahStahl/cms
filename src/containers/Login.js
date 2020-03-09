@@ -29,7 +29,7 @@ export default function Login(props) {
     <div className="Login">
       <div className="lander">
         <h2>Websites by Hannah</h2>
-        <h1>Admin Console</h1>
+        <h1>Client Portal</h1>
       </div>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="email" size="large">
