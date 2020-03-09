@@ -1,0 +1,16 @@
+.App {
+  margin-top: 15px;
+}
+
+.App .navbar {
+  border-bottom: solid 1px #eee;
+  background-color: white;
+}
+
+.App .navbar-brand {
+  font-weight: bold;
+}
+
+.App .navbar-collapse {
+  justify-content: flex-end;
+}

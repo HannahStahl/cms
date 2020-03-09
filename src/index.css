@@ -1,0 +1,61 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Rubik', sans-serif;
+  font-size: 16px;
+  color: #333;
+  letter-spacing: 1.5px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+p, input, textarea, select, button {
+  letter-spacing: 1.5px;
+}
+
+select.form-control,
+textarea.form-control,
+input.form-control {
+  font-size: 16px;
+}
+input[type=file] {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.page-header {
+  padding-top: 25px;
+  padding-bottom: 25px;
+  border-bottom: solid 1px #eee;
+  margin-bottom: 35px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.page-header h1 {
+  margin-bottom: 0px;
+}
+
+.form-group {
+  margin-bottom: 30px;
+}
+
+.form-buttons button {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+@media all and (min-width: 800px) { 
+  .form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    flex-grow: 1;
+  }
+}
+
+@media all and (max-width: 801px) {
+  .form-buttons button {
+    margin: 5px;
+  }
+}

@@ -1,0 +1,8 @@
+.Home .categories {
+  margin-bottom: 100px;
+}
+
+.Home .categories .page-header {
+  border-bottom: none;
+  margin-bottom: 0px;
+}

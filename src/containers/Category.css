@@ -1,0 +1,37 @@
+.Category {
+  height: 100%;
+  margin-bottom: 100px;
+}
+
+.Category .content {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.Category form {
+  padding-bottom: 15px;
+  width: 400px;
+  min-width: 350px;
+  margin-right: 60px;
+}
+
+.Category form textarea {
+  height: 300px;
+  font-size: 24px;
+}
+
+.Category input[type=file]{ 
+  color: transparent;
+}
+
+.Category .note {
+  margin-bottom: 30px;
+  font-style: italic;
+}
+
+@media all and (min-width: 800px) {
+  .Category .items {
+    padding-left: 60px;
+    border-left: solid 1px #eee;
+  }
+}

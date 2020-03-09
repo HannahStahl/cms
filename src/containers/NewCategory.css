@@ -1,0 +1,19 @@
+.NewCategory form {
+  padding-bottom: 15px;
+  width: 470px;
+  min-width: 400px;
+}
+
+.NewCategory form textarea {
+  height: 300px;
+  font-size: 24px;
+}
+
+.NewCategory input[type=file]{ 
+  color: transparent;
+}
+
+.NewCategory .note {
+  margin-bottom: 30px;
+  font-style: italic;
+}
