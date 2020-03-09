@@ -66,7 +66,7 @@ export default function DraggableItemsList({
                         <img
                           className="item-photo"
                           alt={item[`${itemType}Name`]}
-                          src={item[`${itemType}Photo`] ? `${config.cloudfrontURL}/${item[`${itemType}Photo`]}` : `${process.env.PUBLIC_URL}/placeholder.jpg`}
+                          src={item[`${itemType}Photo`] ? `${config.cloudfrontURL}/${config.userID}/${item[`${itemType}Photo`]}` : `${process.env.PUBLIC_URL}/placeholder.jpg`}
                         />
                       </a>
                       <a className="item-name" href={`/${itemTypePlural}/${item[`${itemType}Id`]}`}>

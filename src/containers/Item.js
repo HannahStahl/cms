@@ -111,7 +111,7 @@ export default function Item(props) {
           const itemPhotos = [];
           photosForItem.forEach((photoForItem) => {
             const fileName = photos.find(photo => photo.photoId === photoForItem.photoId).photoName;
-            itemPhotos.push({ name: fileName, url: `${config.cloudfrontURL}/${fileName}` });
+            itemPhotos.push({ name: fileName, url: `${config.cloudfrontURL}/${config.userID}/${fileName}` });
           });
           setItemPhotos(itemPhotos);
         }

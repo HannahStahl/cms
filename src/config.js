@@ -13,7 +13,8 @@ const dev = {
     APP_CLIENT_ID: "3u5k9uci7j6logakre4o1ha6ho",
     IDENTITY_POOL_ID: "us-east-1:ea5b595a-b529-4f0e-8565-238ddf43a0e3"
   },
-  cloudfrontURL: "https://d1c360lneb6ftg.cloudfront.net", // TODO pull from DB config
+  userID: "us-east-1:34ee9094-c95a-4f8f-b2c2-551ef33bd49f", // TODO pull from DB config
+  cloudfrontURL: "https://d1ljva6zkf6zjh.cloudfront.net",
 };
 
 const prod = {
@@ -31,7 +32,8 @@ const prod = {
     APP_CLIENT_ID: "7i6bi5n6i7l36vopjn1ioj8576",
     IDENTITY_POOL_ID: "us-east-1:0076c7d8-65d8-4f2f-b4e8-476048d8b7de"
   },
-  cloudfrontURL: "https://dd7h6rpqhh194.cloudfront.net", // TODO change to Shana's user ID Cloudfront & pull from DB config
+  userID: "us-east-1:e51b2b71-8b21-46c0-a302-6f3b84783041", // TODO change to Shana's user ID and pull from DB config
+  cloudfrontURL: "https://d1esxin5o90ebg.cloudfront.net",
 };
 
 // Default to dev if not set

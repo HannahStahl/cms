@@ -42,7 +42,7 @@ export default function Category(props) {
         ]);
         const { categoryName, categoryPhoto } = category;
         if (categoryPhoto) {
-          category.categoryPhotoURL = `${config.cloudfrontURL}/${categoryPhoto}`;
+          category.categoryPhotoURL = `${config.cloudfrontURL}/${config.userID}/${categoryPhoto}`;
         }
         items.forEach((item, i) => {
           const photoIds = photosForItems
