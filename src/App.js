@@ -20,6 +20,7 @@ function App(props) {
     try {
       await Auth.currentSession();
       const { id } = await Auth.currentUserInfo();
+      console.log(id);
       const clientConfigFromDB = await fetch(`${config.clientConfigURL}/${id}`).then(response => response.json());
       userHasAuthenticated(true);
       setClientConfig(clientConfigFromDB);
