@@ -13,7 +13,7 @@ const dev = {
     APP_CLIENT_ID: "3u5k9uci7j6logakre4o1ha6ho",
     IDENTITY_POOL_ID: "us-east-1:ea5b595a-b529-4f0e-8565-238ddf43a0e3"
   },
-  clientConfigURL: "https://ulqgs43gc2.execute-api.us-east-1.amazonaws.com/dev/config/28bf5cd7-3f38-4e8f-b952-a90e06bd88cc",
+  clientConfigURL: "https://f59e01c6gj.execute-api.us-east-1.amazonaws.com/dev/config",
   cloudfrontURL: "https://d1ljva6zkf6zjh.cloudfront.net",
 };
 
@@ -32,7 +32,7 @@ const prod = {
     APP_CLIENT_ID: "7i6bi5n6i7l36vopjn1ioj8576",
     IDENTITY_POOL_ID: "us-east-1:0076c7d8-65d8-4f2f-b4e8-476048d8b7de"
   },
-  clientConfigURL: "https://4vr9bqayd7.execute-api.us-east-1.amazonaws.com/prod/config/28bf5cd7-3f38-4e8f-b952-a90e06bd88cc",
+  clientConfigURL: "https://4vr9bqayd7.execute-api.us-east-1.amazonaws.com/prod/config",
   cloudfrontURL: "https://d1esxin5o90ebg.cloudfront.net",
 };
 

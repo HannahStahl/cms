@@ -54,7 +54,8 @@ export default function Signup(props) {
     try {
       await Auth.confirmSignUp(fields.email, fields.confirmationCode);
       await Auth.signIn(fields.email, fields.password);
-      const clientConfigFromDB = await fetch(config.clientConfigURL);
+      const { id } = await Auth.currentUserInfo();
+      const clientConfigFromDB = await fetch(`${config.clientConfigURL}/${id}`).then(response => response.json());
       props.userHasAuthenticated(true);
       props.setClientConfig(clientConfigFromDB);
       props.history.push("/");

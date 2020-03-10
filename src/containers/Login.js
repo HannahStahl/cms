@@ -19,7 +19,8 @@ export default function Login(props) {
     setIsLoading(true);
     try {
       await Auth.signIn(fields.email, fields.password);
-      const clientConfigFromDB = await fetch(config.clientConfigURL);
+      const { id } = await Auth.currentUserInfo();
+      const clientConfigFromDB = await fetch(`${config.clientConfigURL}/${id}`).then(response => response.json());
       props.userHasAuthenticated(true);
       props.setClientConfig(clientConfigFromDB);
     } catch (e) {
