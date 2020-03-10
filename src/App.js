@@ -20,7 +20,6 @@ function App(props) {
     try {
       await Auth.currentSession();
       const { id } = await Auth.currentUserInfo();
-      console.log(id);
       const clientConfigFromDB = await fetch(`${config.clientConfigURL}/${id}`).then(response => response.json());
       userHasAuthenticated(true);
       setClientConfig(clientConfigFromDB);
@@ -37,6 +36,7 @@ function App(props) {
   async function handleLogout() {
     await Auth.signOut();
     userHasAuthenticated(false);
+    setClientConfig({}); // TODO figure out why this isn't working
     props.history.push("/");
   }
 
