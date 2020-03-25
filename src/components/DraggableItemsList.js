@@ -99,7 +99,12 @@ export default function DraggableItemsList({
           )}
         </Droppable>
       </DragDropContext>
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
+      <Modal 
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
         <Modal.Body>You are about to navigate to a new page. Do you wish to continue without saving your changes?</Modal.Body>
         <Modal.Footer>
           <LoaderButton variant="outline-secondary" onClick={() => setShowModal(false)}>
