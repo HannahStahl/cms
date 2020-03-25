@@ -13,8 +13,10 @@ export default function Category(props) {
   const [file, setFile] = useState(null);
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState(null);
+  const [originalCategoryName, setOriginalCategoryName] = useState("");
   const [categoryName, setCategoryName] = useState("");
   const [items, setItems] = useState([]);
+  const [fileChanged, setFileChanged] = useState(false);
   const [isSavingDraft, setIsSavingDraft] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -54,10 +56,10 @@ export default function Category(props) {
         });
         setCategories(categories);
         setCategoryName(categoryName);
+        setOriginalCategoryName(categoryName);
         setCategory(category);
         setItems(items);
       } catch (e) {
-        console.log('here');
         alert(e);
       }
     }
@@ -75,6 +77,7 @@ export default function Category(props) {
   function handleFileChange(event) {
     const file = event.target.files[0];
     if (file) {
+      setFileChanged(true);
       const splitFileName = file.name.toLowerCase().split('.');
       const fileExtension = splitFileName[splitFileName.length - 1];
       if (!["jpg", "jpeg", "png", "gif"].includes(fileExtension)) {
@@ -155,6 +158,7 @@ export default function Category(props) {
         newItemURL={`/items/new/${props.match.params.id}`}
         short
         clientConfig={props.clientConfig}
+        unsavedChanges={(categoryName !== originalCategoryName) || fileChanged}
       />
     );
   }

@@ -31,3 +31,18 @@
 .DraggableItemsList .item h4.short {
   max-width: 300px;
 }
+
+.modal-content {
+  padding: 10px;
+}
+
+.modal-footer {
+  padding-top: 5px;
+  border-top: none;
+}
+
+@media all and (hover: hover) {
+  .item-photo:hover, .item-name:hover {
+    cursor: pointer;
+  }
+}

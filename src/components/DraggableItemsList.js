@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import Modal from 'react-bootstrap/Modal';
 import { API } from "aws-amplify";
 import config from '../config';
 import "./DraggableItemsList.css";
+import LoaderButton from "./LoaderButton";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -16,8 +18,10 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 });
 
 export default function DraggableItemsList({
-  originalItems, itemType, itemTypePlural, newItemURL, short, clientConfig,
+  originalItems, itemType, itemTypePlural, newItemURL, short, clientConfig, unsavedChanges,
 }) {
+  const [showModal, setShowModal] = useState(false);
+  const [link, setLink] = useState(undefined);
   const [items, setItems] = useState(originalItems);
   useEffect(() => { setItems(originalItems); }, [originalItems])
 
@@ -41,12 +45,21 @@ export default function DraggableItemsList({
     setItems(updatedItems);
   }
 
+  const onLinkClick = (link) => {
+    if (unsavedChanges) {
+      setLink(link);
+      setShowModal(true);
+    } else {
+      window.location.pathname = link;
+    }
+  };
+
   return (
     <div className="DraggableItemsList">
       <div className="item">
-        <a className="item-name new-item" href={newItemURL}>
+        <div className="item-name new-item" onClick={() => onLinkClick(newItemURL)}>
           <h4>{`+ Create new ${itemType}`}</h4>
-        </a>
+        </div>
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
@@ -62,7 +75,7 @@ export default function DraggableItemsList({
                       style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
                       className="item"
                     >
-                      <a href={`/${itemTypePlural}/${item[`${itemType}Id`]}`}>
+                      <div onClick={() => onLinkClick(`/${itemTypePlural}/${item[`${itemType}Id`]}`)}>
                         <img
                           className="item-photo"
                           alt={item[`${itemType}Name`]}
@@ -70,10 +83,13 @@ export default function DraggableItemsList({
                             `${config.cloudfrontURL}/${clientConfig.userId}/${item[`${itemType}Photo`]}`
                           ) : `${process.env.PUBLIC_URL}/placeholder.jpg`}
                         />
-                      </a>
-                      <a className="item-name" href={`/${itemTypePlural}/${item[`${itemType}Id`]}`}>
+                      </div>
+                      <div
+                        className="item-name"
+                        onClick={() => onLinkClick(`/${itemTypePlural}/${item[`${itemType}Id`]}`)}
+                      >
                         <h4 className={short ? 'short' : ''}>{item[`${itemType}Name`]}</h4>
-                      </a>
+                      </div>
                     </div>
                   )}
                 </Draggable>
@@ -83,6 +99,17 @@ export default function DraggableItemsList({
           )}
         </Droppable>
       </DragDropContext>
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Body>You are about to navigate to a new page. Do you wish to continue without saving your changes?</Modal.Body>
+        <Modal.Footer>
+          <LoaderButton variant="outline-secondary" onClick={() => setShowModal(false)}>
+            No
+          </LoaderButton>
+          <LoaderButton variant="outline-primary" onClick={() => { window.location.pathname = link; }}>
+            Yes
+          </LoaderButton>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
