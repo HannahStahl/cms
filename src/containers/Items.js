@@ -74,20 +74,20 @@ export default function Items(props) {
   return (
     <div className="Items">
       {pageConfig.categorized ? (
-      <div className="categories">
-        <div className="page-header">
-          <h1>{`${pageConfig.itemType} Categories`}</h1>
+        <div className="categories">
+          <div className="page-header">
+            <h1>{`${pageConfig.itemType} Categories`}</h1>
+          </div>
+          {!isLoading && renderCategoriesList(categories)}
         </div>
-        {!isLoading && renderCategoriesList(categories)}
-      </div>
-    ) : (
-      <div className="items">
-        <div className="page-header">
-          <h1>{`${pageConfig.itemType}s`}</h1>
+      ) : (
+        <div className="items">
+          <div className="page-header">
+            <h1>{`${pageConfig.itemType}s`}</h1>
+          </div>
+          {!isLoading && renderItemsList(items)}
         </div>
-        {!isLoading && renderItemsList(items)}
-      </div>
-    )}
+      )}
     </div>
   );
 }

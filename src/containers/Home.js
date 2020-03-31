@@ -109,10 +109,7 @@ export default function Home(props) {
 
   function renderContent() {
     if (props.clientConfig.length > 0) {
-      if (props.clientConfig.length > 1) {
-        return renderCards();
-      }
-      return renderList();
+      return (props.clientConfig.length > 1 ? renderCards() : renderList());
     }
     return <LoadingSpinner />;
   }

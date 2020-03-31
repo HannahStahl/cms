@@ -72,6 +72,13 @@ export default function Item(props) {
       return API.get("items-api", `/itemsToPhotos/${props.match.params.id}`);
     }
 
+    function loadItemsInCategory(categoryId, cmsPageConfigId) {
+      if (pageConfig.categorized) {
+        return API.get("items-api", `/items/${categoryId}`);
+      }
+      return API.get("items-api", `/itemsOfSpecifiedType/${cmsPageConfigId}`);
+    }
+
     async function onLoad() {
       try {
         const item = await loadItem();
@@ -86,6 +93,7 @@ export default function Item(props) {
           sizesForItem,
           photos,
           photosForItem,
+          itemsInCategory,
         ] = await Promise.all([
           loadCategories(pageConfig.id),
           loadTags(),
@@ -96,6 +104,7 @@ export default function Item(props) {
           loadSizesForItem(),
           loadPhotos(),
           loadPhotosForItem(),
+          loadItemsInCategory(item.categoryId, pageConfig.id),
         ]);
         const {
           categoryId,
@@ -105,8 +114,6 @@ export default function Item(props) {
           itemSalePrice,
           itemOnSale,
         } = item;
-
-        const itemsInCategory = categoryId ? await API.get("items-api", `/items/${categoryId}`) : [];
 
         if (photosForItem) {
           const itemPhotos = [];
@@ -166,7 +173,7 @@ export default function Item(props) {
     }
 
     onLoad();
-  }, [props.match.params.id, props.clientConfig]);
+  }, [props, pageConfig]);
 
   function validateDraftForm() {
     return itemName.length > 0;
@@ -262,7 +269,7 @@ export default function Item(props) {
 
   async function handleSubmit(itemPublished) {
     if (itemName.toLowerCase() !== item.itemName.toLowerCase() && itemNameExists()) {
-      window.alert(`A ${pageConfig.itemType} by this name already exists in this category.`);
+      window.alert(`A ${pageConfig.itemType} by this name already exists${pageConfig.categorized ? ' in this category' : ''}.`);
       return;
     }
     let updatedItemPhotos = itemPhotos.map(itemPhoto => ({

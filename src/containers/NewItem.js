@@ -36,7 +36,7 @@ export default function NewItem(props) {
 
     function loadItems() {
       if (pageConfig.categorized) {
-        return API.get("items-api", `/items/${props.match.params.categoryId}`);
+        return API.get("items-api", `/items/${categoryId}`);
       }
       return API.get("items-api", `/itemsOfSpecifiedType/${pageConfig.id}`);
     }
@@ -136,7 +136,7 @@ export default function NewItem(props) {
 
   async function handleSubmit(itemPublished) {
     if (itemNameExists()) {
-      window.alert(`A ${pageConfig.itemType} by this name already exists in this category.`);
+      window.alert(`A ${pageConfig.itemType} by this name already exists${pageConfig.categorized ? ' in this category' : ''}.`);
       return;
     }
     let updatedItemPhotos = itemPhotos.map(itemPhoto => ({

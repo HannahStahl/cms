@@ -124,6 +124,7 @@ export default function Category(props) {
         categoryPhoto: categoryPhoto || category.categoryPhoto,
         categoryPublished,
         categoryRank: category.categoryRank,
+        cmsPageConfigId: pageConfig.id,
       });
       props.history.push("/");
     } catch (e) {

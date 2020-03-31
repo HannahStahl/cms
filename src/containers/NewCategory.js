@@ -16,11 +16,11 @@ export default function NewCategory(props) {
 
   useEffect(() => {
     async function onLoad() {
-      const categories = await API.get("items-api", `/categories/${props.match.params.configId}`);
+      const categories = await API.get("items-api", `/categories/${pageConfig.id}`);
       setCategories(categories);
     }
     onLoad();
-  }, [props.match.params.configId]);
+  }, [pageConfig.id]);
 
   function validateForm() {
     return categoryName.length > 0;
@@ -56,7 +56,7 @@ export default function NewCategory(props) {
       await createCategory({
         categoryName, categoryPhoto,
         categoryRank: categories.length > 0 ? (categories[categories.length - 1].categoryRank + 1) : 0,
-        cmsPageConfigId: props.match.params.configId
+        cmsPageConfigId: pageConfig.id
       });
       props.history.push("/");
     } catch (e) {
