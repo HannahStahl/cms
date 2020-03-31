@@ -3,6 +3,7 @@ import { API } from "aws-amplify";
 import "./Home.css";
 import DraggableItemsList from "../components/DraggableItemsList";
 import Login from "./Login";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function Home(props) {
   const [categories, setCategories] = useState([]);
@@ -107,10 +108,13 @@ export default function Home(props) {
   }
 
   function renderContent() {
-    if (props.clientConfig.length > 1) {
-      return renderCards();
+    if (props.clientConfig.length > 0) {
+      if (props.clientConfig.length > 1) {
+        return renderCards();
+      }
+      return renderList();
     }
-    return renderList();
+    return <LoadingSpinner />;
   }
 
   function renderLander() {
