@@ -322,7 +322,7 @@ export default function Item(props) {
         saveSizes(),
       ]);
       if (pageConfig.categorized) {
-        props.history.push(`categories/${categoryId}`);
+        props.history.push(`/categories/${categoryId}`);
       } else {
         props.history.push('/');
       }
@@ -349,7 +349,7 @@ export default function Item(props) {
     try {
       await deleteItem();
       if (pageConfig.categorized) {
-        props.history.push(`categories/${categoryId}`);
+        props.history.push(`/categories/${categoryId}`);
       } else {
         props.history.push('/');
       }

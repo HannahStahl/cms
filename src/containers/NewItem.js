@@ -185,7 +185,7 @@ export default function NewItem(props) {
         savePhotos(newItem.itemId, updatedItemPhotos),
       ]);
       if (pageConfig.categorized) {
-        props.history.push(`categories/${categoryId}`);
+        props.history.push(`/categories/${categoryId}`);
       } else {
         props.history.push('/');
       }
