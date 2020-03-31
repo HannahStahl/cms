@@ -86,7 +86,7 @@ export default function NewItem(props) {
     }
 
     onLoad();
-  }, [props.match.params, props.clientConfig, pageConfig]);
+  }, [pageConfig, categoryId]);
 
   function validateDraftForm() {
     return itemName.length > 0;
