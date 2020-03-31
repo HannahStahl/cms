@@ -31,6 +31,7 @@
 
 .Category .items .items-list-label {
   text-transform: capitalize;
+  margin-bottom: 12px;
 }
 
 @media all and (min-width: 800px) {

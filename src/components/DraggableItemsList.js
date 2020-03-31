@@ -56,6 +56,7 @@ export default function DraggableItemsList({
 
   return (
     <div className="DraggableItemsList">
+      <p className="instructions">Hold and drag to reorder.</p>
       <div className="item">
         <div className="item-name new-item" onClick={() => onLinkClick(newItemURL)}>
           <h4>{`+ Create new ${itemType}`}</h4>
