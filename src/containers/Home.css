@@ -31,10 +31,6 @@
   height: 300px;
 }
 
-.Home .home-page-card a:hover {
-  text-decoration: none;
-}
-
 .Home .home-page-card-container {
   width: 100%;
   height: 100%;
@@ -46,15 +42,21 @@
   align-items: center;
 }
 
-.Home .home-page-card a:hover > .home-page-card-container {
-  background-color: #eee;
-}
-
 .Home .home-page-card-container h2 {
   text-transform: capitalize;
   color: rgba(0, 0, 0, 0.5);
 }
 
-.Home .home-page-card a:hover > .home-page-card-container h2 {
-  color: rgba(0, 0, 0, 0.7);
+@media all and (hover: hover) {
+  .Home .home-page-card a:hover {
+    text-decoration: none;
+  }
+
+  .Home .home-page-card a:hover > .home-page-card-container {
+    background-color: #eee;
+  }
+
+  .Home .home-page-card a:hover > .home-page-card-container h2 {
+    color: rgba(0, 0, 0, 0.7);
+  }
 }
