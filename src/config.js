@@ -13,7 +13,7 @@ const dev = {
     APP_CLIENT_ID: "3u5k9uci7j6logakre4o1ha6ho",
     IDENTITY_POOL_ID: "us-east-1:ea5b595a-b529-4f0e-8565-238ddf43a0e3"
   },
-  clientConfigURL: "https://f59e01c6gj.execute-api.us-east-1.amazonaws.com/dev/config",
+  clientConfigURL: "https://f59e01c6gj.execute-api.us-east-1.amazonaws.com/dev",
   cloudfrontURL: "https://d1ljva6zkf6zjh.cloudfront.net",
 };
 

@@ -5,6 +5,7 @@ import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import Home from "./containers/Home";
 import Category from "./containers/Category";
 import Item from "./containers/Item";
+import Items from "./containers/Items";
 import Signup from "./containers/Signup";
 import NewCategory from "./containers/NewCategory";
 import NewItem from "./containers/NewItem";
@@ -15,10 +16,11 @@ export default function Routes({ appProps }) {
     <Switch>
       <AppliedRoute path="/" exact component={Home} appProps={appProps} />
       <AuthenticatedRoute path="/signup" exact component={Signup} appProps={appProps} />
-      <AuthenticatedRoute path="/categories/new" exact component={NewCategory} appProps={appProps} />
+      <AuthenticatedRoute path="/categories/new/:configId" exact component={NewCategory} appProps={appProps} />
       <AuthenticatedRoute path="/categories/:id" exact component={Category} appProps={appProps} />
-      <AuthenticatedRoute path="/items/new/:id" exact component={NewItem} appProps={appProps} />
+      <AuthenticatedRoute path="/items/new/:configId/:categoryId" exact component={NewItem} appProps={appProps} />
       <AuthenticatedRoute path="/items/:id" exact component={Item} appProps={appProps} />
+      <AuthenticatedRoute path="/:configId" exact component={Items} appProps={appProps} />
       {/* Finally, catch all unmatched routes */}
       <Route component={NotFound} />
     </Switch>

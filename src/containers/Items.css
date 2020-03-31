@@ -1,0 +1,19 @@
+.Items .categories {
+  margin-bottom: 100px;
+}
+
+.Items .categories .page-header {
+  border-bottom: none;
+  margin-bottom: 0px;
+  text-transform: capitalize;
+}
+
+.Items .items {
+  margin-bottom: 100px;
+}
+
+.Items .items .page-header {
+  border-bottom: none;
+  margin-bottom: 0px;
+  text-transform: capitalize;
+}

@@ -6,21 +6,21 @@ import { s3Upload } from "../libs/awsLib";
 import "./NewCategory.css";
 
 export default function NewCategory(props) {
+  const [pageConfig] = useState(
+    props.clientConfig.find(configInList => configInList.id === props.match.params.configId)
+  );
   const [file, setFile] = useState(null);
   const [categoryName, setCategoryName] = useState("");
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    function loadCategories() {
-      return API.get("items-api", "/categories");
-    }
     async function onLoad() {
-      const categories = await loadCategories();
+      const categories = await API.get("items-api", `/categories/${props.match.params.configId}`);
       setCategories(categories);
     }
     onLoad();
-  }, []);
+  }, [props.match.params.configId]);
 
   function validateForm() {
     return categoryName.length > 0;
@@ -56,6 +56,7 @@ export default function NewCategory(props) {
       await createCategory({
         categoryName, categoryPhoto,
         categoryRank: categories.length > 0 ? (categories[categories.length - 1].categoryRank + 1) : 0,
+        cmsPageConfigId: props.match.params.configId
       });
       props.history.push("/");
     } catch (e) {
@@ -92,7 +93,7 @@ export default function NewCategory(props) {
         </div>
       </div>
       <p className="note">
-        {`Categories can be moved out of Draft state once they have at least one published ${props.clientConfig.itemType}.`}
+        {`Categories can be moved out of Draft state once they have at least one published ${pageConfig.itemType}.`}
       </p>
       <Form>
         <Form.Group controlId="categoryName">

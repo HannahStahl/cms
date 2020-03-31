@@ -10,7 +10,7 @@ import config from "./config";
 function App(props) {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
-  const [clientConfig, setClientConfig] = useState({});
+  const [clientConfig, setClientConfig] = useState([]);
 
   useEffect(() => {
     onLoad();
@@ -20,7 +20,7 @@ function App(props) {
     try {
       await Auth.currentSession();
       const { id } = await Auth.currentUserInfo();
-      const clientConfigFromDB = await fetch(`${config.clientConfigURL}/${id}`).then(response => response.json());
+      const clientConfigFromDB = await fetch(`${config.clientConfigURL}/pages/${id}`).then(response => response.json());
       userHasAuthenticated(true);
       setClientConfig(clientConfigFromDB);
     }
@@ -36,7 +36,7 @@ function App(props) {
   async function handleLogout() {
     await Auth.signOut();
     userHasAuthenticated(false);
-    setClientConfig({}); // TODO figure out why this isn't working
+    setClientConfig([]); // TODO figure out why this isn't working
     props.history.push("/");
   }
 
@@ -45,23 +45,18 @@ function App(props) {
       <div className="App container">
         {isAuthenticated && (
           <Navbar collapseOnSelect expand="lg" fixed="top">
-            <Navbar.Brand>
-              <Nav.Link href="/">Home</Nav.Link>
-            </Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse>
               <Nav>
-                {isAuthenticated ? (
-                  <Nav.Item onClick={handleLogout}>
-                    <Nav.Link>Log out</Nav.Link>
-                  </Nav.Item>
-                ) : (
-                  <Nav.Item>
-                    <Nav.Link href="/">Log in</Nav.Link>
-                  </Nav.Item>
-                )}
+                <Nav.Link href="/">Home</Nav.Link>
+                {clientConfig.length > 1 && clientConfig.map(config => (
+                  <Nav.Link key={config.id} href={`/${config.itemType}s`}>{config.itemType}s</Nav.Link>
+                ))}
               </Nav>
             </Navbar.Collapse>
+            {isAuthenticated ? (
+              <div className="log-in-or-out" onClick={handleLogout}>Log out</div>
+            ) : <a className="log-in-or-out" href="/">Log in</a>}
           </Navbar>
         )}
         <div style={{ paddingTop: isAuthenticated ? 100 : 0 }}>

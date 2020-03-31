@@ -11,6 +11,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function Category(props) {
   const [file, setFile] = useState(null);
+  const [pageConfig, setPageConfig] = useState({});
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState(null);
   const [originalCategoryName, setOriginalCategoryName] = useState("");
@@ -22,11 +23,11 @@ export default function Category(props) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    function loadCategories() {
-      return API.get("items-api", "/categories");
-    }
     function loadCategory() {
       return API.get("items-api", `/category/${props.match.params.id}`);
+    }
+    function loadCategories(cmsPageConfigId) {
+      return API.get("items-api", `/categories/${cmsPageConfigId}`);
     }
     function loadItemsForCategory() {
       return API.get("items-api", `/items/${props.match.params.id}`);
@@ -39,12 +40,14 @@ export default function Category(props) {
     }
     async function onLoad() {
       try {
-        const [categories, category, items, photos, photosForItems] = await Promise.all([
-          loadCategories(), loadCategory(), loadItemsForCategory(), loadPhotos(), loadItemsToPhotos(),
+        const category = await loadCategory();
+        const pageConfig = props.clientConfig.find(configInList => configInList.id === category.cmsPageConfigId);
+        const [categories, items, photos, photosForItems] = await Promise.all([
+          loadCategories(pageConfig.id), loadItemsForCategory(), loadPhotos(), loadItemsToPhotos(),
         ]);
         const { categoryName, categoryPhoto } = category;
         if (categoryPhoto) {
-          category.categoryPhotoURL = `${config.cloudfrontURL}/${props.clientConfig.userId}/${categoryPhoto}`;
+          category.categoryPhotoURL = `${config.cloudfrontURL}/${pageConfig.userId}/${categoryPhoto}`;
         }
         items.forEach((item, i) => {
           const photoIds = photosForItems
@@ -54,17 +57,18 @@ export default function Category(props) {
           const firstPhoto = firstPhotoId && photos.find(photo => photo.photoId === firstPhotoId);
           items[i].itemPhoto = firstPhoto && firstPhoto.photoName;
         });
+        setPageConfig(pageConfig);
+        setCategory(category);
         setCategories(categories);
         setCategoryName(categoryName);
         setOriginalCategoryName(categoryName);
-        setCategory(category);
         setItems(items);
       } catch (e) {
         alert(e);
       }
     }
     onLoad();
-  }, [props.match.params.id, props.clientConfig.userId]);
+  }, [props.match.params.id, props.clientConfig]);
 
   function validateDraftForm() {
     return categoryName.length > 0;
@@ -155,9 +159,9 @@ export default function Category(props) {
         itemType='item'
         itemTypePlural='items'
         originalItems={items}
-        newItemURL={`/items/new/${props.match.params.id}`}
+        newItemURL={`/items/new/${pageConfig.id}/${props.match.params.id}`}
         short
-        clientConfig={props.clientConfig}
+        clientConfig={pageConfig}
         unsavedChanges={(categoryName !== originalCategoryName) || fileChanged}
       />
     );
@@ -168,7 +172,7 @@ export default function Category(props) {
       <div className="items">
         <Form.Group>
           <Form.Label className="items-list-label">
-            {`${props.clientConfig.itemType}s`}
+            {`${pageConfig.itemType}s`}
           </Form.Label>
           <ListGroup>
             {renderItemsList(items)}
@@ -249,7 +253,7 @@ export default function Category(props) {
         <>
           {items.filter((item) => item.itemPublished).length === 0 && (
             <p className="note">
-              {`Categories can be moved out of Draft state once they have at least one published ${props.clientConfig.itemType}.`}
+              {`Categories can be moved out of Draft state once they have at least one published ${pageConfig.itemType}.`}
             </p>
           )}
           <div className="content">

@@ -7,14 +7,24 @@
   background-color: white;
 }
 
-.App .navbar-brand .nav-link {
-  color: rgba(0, 0, 0, .5);
+.App .log-in-or-out {
+  color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 16px;
+  right: 24px;
 }
 
-.App .navbar-brand .nav-link:hover {
+.App .nav-link {
+  color: rgba(0, 0, 0, .5);
+  text-transform: capitalize;
+  margin-right: 15px;
+}
+
+.App .nav-link:hover {
   color: rgba(0, 0, 0, 0.7);
 }
 
-.App .navbar-collapse {
-  justify-content: flex-end;
+.App .log-in-or-out:hover {
+  color: rgba(0, 0, 0, 0.7);
+  cursor: pointer;
 }

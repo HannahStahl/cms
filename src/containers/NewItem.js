@@ -8,7 +8,10 @@ import "./NewItem.css";
 import DraggablePhotosGrid from '../components/DraggablePhotosGrid';
 
 export default function NewItem(props) {
-  const [categoryId, setCategoryId] = useState(props.match.params.id);
+  const [pageConfig] = useState(
+    props.clientConfig.find(configInList => configInList.id === props.match.params.configId)
+  );
+  const [categoryId, setCategoryId] = useState(props.match.params.categoryId);
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [itemsInCategory, setItemsInCategory] = useState([]);
   const [itemName, setItemName] = useState("");
@@ -28,11 +31,14 @@ export default function NewItem(props) {
 
   useEffect(() => {
     function loadCategories() {
-      return API.get("items-api", "/categories");
+      return API.get("items-api", `/categories/${pageConfig.id}`);
     }
 
     function loadItems() {
-      return API.get("items-api", `/items/${props.match.params.id}`);
+      if (pageConfig.categorized) {
+        return API.get("items-api", `/items/${props.match.params.categoryId}`);
+      }
+      return API.get("items-api", `/itemsOfSpecifiedType/${pageConfig.id}`);
     }
 
     function loadTags() {
@@ -80,27 +86,22 @@ export default function NewItem(props) {
     }
 
     onLoad();
-  }, [props.match.params.id]);
+  }, [props.match.params, props.clientConfig, pageConfig]);
 
   function validateDraftForm() {
     return itemName.length > 0;
   }
 
   function validatePublishForm() {
-    let valid = (
+    return (
       itemName.length > 0
       && itemDescription.length > 0
       && (itemPhotos && itemPhotos.length > 0)
+      && (!pageConfig.price || (itemPrice > 0))
+      && (!pageConfig.sale || !itemOnSale || itemSalePrice > 0)
+      && (!pageConfig.sizes || (itemSizes && itemSizes.length > 0))
+      && (!pageConfig.colors || (itemColors && itemColors.length > 0))
     );
-    if (props.clientConfig.eCommerce) {
-      valid = valid && (
-        itemPrice > 0
-        && (!itemOnSale || itemSalePrice > 0)
-        && (itemSizes && itemSizes.length > 0)
-        && (itemColors && itemColors.length > 0)
-      );
-    }
-    return valid;
   }
 
   function handleFileChange(event) {
@@ -119,10 +120,10 @@ export default function NewItem(props) {
     if (nonImageFound) {
       alert(`Please upload image files only.`);
     } else {
-      if (props.clientConfig.itemType === 'photo') {
-        setItemPhotos(files);
-      } else {
+      if (pageConfig.multiplePhotos) {
         setItemPhotos(itemPhotos.concat(files));
+      } else {
+        setItemPhotos(files);
       }
     }
   }
@@ -135,7 +136,7 @@ export default function NewItem(props) {
 
   async function handleSubmit(itemPublished) {
     if (itemNameExists()) {
-      window.alert(`A ${props.clientConfig.itemType} by this name already exists in this category.`);
+      window.alert(`A ${pageConfig.itemType} by this name already exists in this category.`);
       return;
     }
     let updatedItemPhotos = itemPhotos.map(itemPhoto => ({
@@ -173,8 +174,9 @@ export default function NewItem(props) {
         itemSalePrice: itemSalePrice !== "" ? itemSalePrice : undefined,
         itemOnSale,
         itemPublished,
-        categoryId,
+        categoryId: pageConfig.categorized ? categoryId : undefined,
         itemRank: itemsInCategory.length > 0 ? (itemsInCategory[itemsInCategory.length - 1].itemRank + 1) : 0,
+        cmsPageConfigId: pageConfig.id,
       });
       await Promise.all([
         saveTags(newItem.itemId),
@@ -182,7 +184,11 @@ export default function NewItem(props) {
         saveSizes(newItem.itemId),
         savePhotos(newItem.itemId, updatedItemPhotos),
       ]);
-      props.history.push(`/categories/${categoryId}`);
+      if (pageConfig.categorized) {
+        props.history.push(`categories/${categoryId}`);
+      } else {
+        props.history.push('/');
+      }
     } catch (e) {
       alert(e);
       setIsSaving(false);
@@ -243,7 +249,7 @@ export default function NewItem(props) {
   return (
     <div className="NewItem">
       <div className="page-header">
-        <h1>{`Create ${props.clientConfig.itemType}`}</h1>
+        <h1>{`Create ${pageConfig.itemType}`}</h1>
         <div className="form-buttons">
           <LoaderButton
             onClick={() => handleSubmit(false)}
@@ -268,18 +274,20 @@ export default function NewItem(props) {
       <Form>
         <div className="form-fields">
           <div className="left-half">
-            <Form.Group controlId="categoryId">
-              <Form.Label>Category</Form.Label>
-              <Form.Control
-                value={categoryId}
-                as="select"
-                onChange={e => setCategoryId(e.target.value)}
-              >
-                {categoryOptions.map(category => (
-                  <option key={category.categoryId} value={category.categoryId}>{category.categoryName}</option>
-                ))}
-              </Form.Control>
-            </Form.Group>
+            {pageConfig.categorized && (
+              <Form.Group controlId="categoryId">
+                <Form.Label>Category</Form.Label>
+                <Form.Control
+                  value={categoryId}
+                  as="select"
+                  onChange={e => setCategoryId(e.target.value)}
+                >
+                  {categoryOptions.map(category => (
+                    <option key={category.categoryId} value={category.categoryId}>{category.categoryName}</option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+            )}
             <Form.Group controlId="itemName">
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -296,16 +304,18 @@ export default function NewItem(props) {
                 onChange={e => setItemDescription(e.target.value)}
               />
             </Form.Group>
-            {props.clientConfig.eCommerce && (
+            {pageConfig.price && (
+              <Form.Group controlId="itemPrice">
+                <Form.Label>Price</Form.Label>
+                <Form.Control
+                  value={itemPrice}
+                  type="number"
+                  onChange={e => setItemPrice(e.target.value)}
+                />
+              </Form.Group>
+            )}
+            {pageConfig.sale && (
               <>
-                <Form.Group controlId="itemPrice">
-                  <Form.Label>Price</Form.Label>
-                  <Form.Control
-                    value={itemPrice}
-                    type="number"
-                    onChange={e => setItemPrice(e.target.value)}
-                  />
-                </Form.Group>
                 <Form.Group controlId="itemSalePrice">
                   <Form.Label>Sale Price</Form.Label>
                   <Form.Control
@@ -328,50 +338,52 @@ export default function NewItem(props) {
           <div className="right-half">
             <Form.Group controlId="file">
               <Form.Label>
-                {`Image${props.clientConfig.itemType === 'photo' ? '' : 's'}`}
+                {`Image${pageConfig.multiplePhotos ? 's' : ''}`}
               </Form.Label>
               <Form.Control
                 onChange={handleFileChange}
                 type="file"
-                multiple={props.clientConfig.itemType !== 'photo'}
+                multiple={pageConfig.multiplePhotos}
               />
             </Form.Group>
             {itemPhotos && itemPhotos.length > 0 && (
               <DraggablePhotosGrid updateItems={setItemPhotos} items={itemPhotos} />
             )}
-            {props.clientConfig.eCommerce && (
-              <>
-                <Form.Group controlId="itemSizes">
-                  <Form.Label>Sizes</Form.Label>
-                  <CreatableSelect
-                    isMulti
-                    onChange={setItemSizes}
-                    options={sizeOptions}
-                    placeholder=""
-                    value={itemSizes}
-                  />
-                </Form.Group>
-                <Form.Group controlId="itemColors">
-                  <Form.Label>Colors</Form.Label>
-                  <CreatableSelect
-                    isMulti
-                    onChange={setItemColors}
-                    options={colorOptions}
-                    placeholder=""
-                    value={itemColors}
-                  />
-                </Form.Group>
-                <Form.Group controlId="itemTags">
-                  <Form.Label>Tags</Form.Label>
-                  <CreatableSelect
-                    isMulti
-                    onChange={setItemTags}
-                    options={tagOptions}
-                    placeholder=""
-                    value={itemTags}
-                  />
-                </Form.Group>
-              </>
+            {pageConfig.sizes && (
+              <Form.Group controlId="itemSizes">
+                <Form.Label>Sizes</Form.Label>
+                <CreatableSelect
+                  isMulti
+                  onChange={setItemSizes}
+                  options={sizeOptions}
+                  placeholder=""
+                  value={itemSizes}
+                />
+              </Form.Group>
+            )}
+            {pageConfig.colors && (
+              <Form.Group controlId="itemColors">
+                <Form.Label>Colors</Form.Label>
+                <CreatableSelect
+                  isMulti
+                  onChange={setItemColors}
+                  options={colorOptions}
+                  placeholder=""
+                  value={itemColors}
+                />
+              </Form.Group>
+            )}
+            {pageConfig.tags && (
+              <Form.Group controlId="itemTags">
+                <Form.Label>Tags</Form.Label>
+                <CreatableSelect
+                  isMulti
+                  onChange={setItemTags}
+                  options={tagOptions}
+                  placeholder=""
+                  value={itemTags}
+                />
+              </Form.Group>
             )}
           </div>
         </div>
