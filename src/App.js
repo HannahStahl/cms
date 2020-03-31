@@ -50,7 +50,7 @@ function App(props) {
               <Nav>
                 <Nav.Link href="/">Home</Nav.Link>
                 {clientConfig.length > 1 && clientConfig.map(config => (
-                  <Nav.Link key={config.id} href={`/${config.itemType}s`}>{config.itemType}s</Nav.Link>
+                  <Nav.Link key={config.id} href={`/${config.itemType.replace(/ /g, '_')}s`}>{config.itemType}s</Nav.Link>
                 ))}
               </Nav>
             </Navbar.Collapse>

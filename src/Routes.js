@@ -20,7 +20,9 @@ export default function Routes({ appProps }) {
       <AuthenticatedRoute path="/categories/:id" exact component={Category} appProps={appProps} />
       <AuthenticatedRoute path="/items/new/:configId/:categoryId" exact component={NewItem} appProps={appProps} />
       <AuthenticatedRoute path="/items/:id" exact component={Item} appProps={appProps} />
-      <AuthenticatedRoute path="/:configId" exact component={Items} appProps={appProps} />
+      {appProps.clientConfig.map(pageConfig => (
+        <AuthenticatedRoute path={`/${pageConfig.itemType.replace(/ /g, '_')}s`} exact component={Items} appProps={appProps} key={pageConfig.id} />
+      ))}
       {/* Finally, catch all unmatched routes */}
       <Route component={NotFound} />
     </Switch>

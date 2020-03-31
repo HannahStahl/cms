@@ -4,7 +4,7 @@ import "./Items.css";
 import DraggableItemsList from "../components/DraggableItemsList";
 
 export default function Items(props) {
-  const itemTypePlural = props.match.params.configId;
+  const itemTypePlural = window.location.pathname.split('/')[1].replace(/_/g, ' ');
   const itemType = itemTypePlural.substring(0, itemTypePlural.length - 1);
   const [pageConfig] = useState(
     props.clientConfig.find(configInList => configInList.itemType === itemType)

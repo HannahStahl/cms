@@ -96,7 +96,7 @@ export default function Home(props) {
       <div className="home-page-cards">
         {props.clientConfig.map(configInList => (
           <div key={configInList.id} className="home-page-card">
-            <a href={`/${configInList.itemType}s`}>
+            <a href={`/${configInList.itemType.replace(/ /g, '_')}s`}>
               <div className="home-page-card-container">
                 <h2>{configInList.itemType}s</h2>
               </div>
