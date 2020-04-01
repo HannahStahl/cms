@@ -303,6 +303,11 @@ export default function Item(props) {
       setIsSavingDraft(true);
     }
 
+    let itemRank = item.itemRank;
+    if (categoryId !== item.categoryId) {
+      itemRank = itemsInCategory.length > 0 ? (itemsInCategory[itemsInCategory.length - 1].itemRank + 1) : 0;
+    }
+
     try {
       await Promise.all([
         saveItem({
@@ -313,7 +318,7 @@ export default function Item(props) {
           itemOnSale,
           itemPublished,
           categoryId,
-          itemRank: item.itemRank,
+          itemRank,
           cmsPageConfigId: item.cmsPageConfigId,
         }),
         savePhotos(updatedItemPhotos),
@@ -363,6 +368,11 @@ export default function Item(props) {
     return e.target.value.includes('_') || e.target.value.includes('?');
   }
 
+  async function updateCategoryId(newCategoryId) {
+    setCategoryId(newCategoryId);
+    setItemsInCategory(await API.get("items-api", `/items/${newCategoryId}`));
+  }
+
   return (
     <div className="Item">
       {item && (
@@ -408,7 +418,7 @@ export default function Item(props) {
                   <Form.Control
                     value={categoryId}
                     as="select"
-                    onChange={e => setCategoryId(e.target.value)}
+                    onChange={e => updateCategoryId(e.target.value)}
                   >
                     {categoryOptions.map(category => (
                       <option key={category.categoryId} value={category.categoryId}>{category.categoryName}</option>
