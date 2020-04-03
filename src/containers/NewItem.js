@@ -186,6 +186,8 @@ export default function NewItem(props) {
       ]);
       if (pageConfig.categorized) {
         props.history.push(`/categories/${categoryId}`);
+      } else if (props.clientConfig.length > 1) {
+        props.history.push(`/${pageConfig.itemType.replace(/ /g, '_')}s`);
       } else {
         props.history.push('/');
       }

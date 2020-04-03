@@ -328,6 +328,8 @@ export default function Item(props) {
       ]);
       if (pageConfig.categorized) {
         props.history.push(`/categories/${categoryId}`);
+      } else if (props.clientConfig.length > 1) {
+        props.history.push(`/${pageConfig.itemType.replace(/ /g, '_')}s`);
       } else {
         props.history.push('/');
       }
@@ -355,6 +357,8 @@ export default function Item(props) {
       await deleteItem();
       if (pageConfig.categorized) {
         props.history.push(`/categories/${categoryId}`);
+      } else if (props.clientConfig.length > 1) {
+        props.history.push(`/${pageConfig.itemType.replace(/ /g, '_')}s`);
       } else {
         props.history.push('/');
       }
