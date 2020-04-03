@@ -426,7 +426,7 @@ export default function Item(props) {
       {!item ? <LoadingSpinner /> : (
         <Form>
           <div className="form-fields">
-            <div className="left-half">
+            <div className={pageConfig.html ? 'full-width' : 'left-half'}>
               {pageConfig.categorized && (
                 <Form.Group controlId="categoryId">
                   <Form.Label>Category</Form.Label>

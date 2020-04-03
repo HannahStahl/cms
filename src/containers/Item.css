@@ -12,6 +12,10 @@
   min-width: 300px;
 }
 
+.Item .form-fields .full-width {
+  width: 100%;
+}
+
 .Item .page-header h1 {
   text-transform: capitalize;
 }

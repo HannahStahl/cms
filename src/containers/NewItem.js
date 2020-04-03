@@ -282,7 +282,7 @@ export default function NewItem(props) {
       </div>
       <Form>
         <div className="form-fields">
-          <div className="left-half">
+          <div className={pageConfig.html ? 'full-width' : 'left-half'}>
             {pageConfig.categorized && (
               <Form.Group controlId="categoryId">
                 <Form.Label>Category</Form.Label>
