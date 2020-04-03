@@ -58,7 +58,11 @@ export default function NewCategory(props) {
         categoryRank: categories.length > 0 ? (categories[categories.length - 1].categoryRank + 1) : 0,
         cmsPageConfigId: pageConfig.id
       });
-      props.history.push("/");
+      if (props.clientConfig.length > 1) {
+        props.history.push(`/${pageConfig.itemType.replace(/ /g, '_')}s`);
+      } else {
+        props.history.push("/");
+      }
     } catch (e) {
       alert(e);
       setIsLoading(false);

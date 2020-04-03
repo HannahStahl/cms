@@ -126,7 +126,11 @@ export default function Category(props) {
         categoryRank: category.categoryRank,
         cmsPageConfigId: pageConfig.id,
       });
-      props.history.push("/");
+      if (props.clientConfig.length > 1) {
+        props.history.push(`/${pageConfig.itemType.replace(/ /g, '_')}s`);
+      } else {
+        props.history.push("/");
+      }
     } catch (e) {
       alert(e);
       setIsSaving(false);
@@ -147,7 +151,11 @@ export default function Category(props) {
     setIsDeleting(true);
     try {
       await deleteCategory();
-      props.history.push("/");
+      if (props.clientConfig.length > 1) {
+        props.history.push(`/${pageConfig.itemType.replace(/ /g, '_')}s`);
+      } else {
+        props.history.push("/");
+      }
     } catch (e) {
       alert(e);
       setIsDeleting(false);
