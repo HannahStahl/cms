@@ -32,7 +32,7 @@ const prod = {
     APP_CLIENT_ID: "7i6bi5n6i7l36vopjn1ioj8576",
     IDENTITY_POOL_ID: "us-east-1:0076c7d8-65d8-4f2f-b4e8-476048d8b7de"
   },
-  clientConfigURL: "https://xcq5savqy1.execute-api.us-east-1.amazonaws.com/prod/config",
+  clientConfigURL: "https://xcq5savqy1.execute-api.us-east-1.amazonaws.com/prod",
   cloudfrontURL: "https://d1esxin5o90ebg.cloudfront.net",
 };
 
