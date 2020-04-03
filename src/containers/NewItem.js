@@ -6,6 +6,7 @@ import LoaderButton from "../components/LoaderButton";
 import { s3Upload } from "../libs/awsLib";
 import "./NewItem.css";
 import DraggablePhotosGrid from '../components/DraggablePhotosGrid';
+import WysiwygEditor from "../components/WysiwygEditor";
 
 export default function NewItem(props) {
   const [pageConfig] = useState(
@@ -17,6 +18,7 @@ export default function NewItem(props) {
   const [itemName, setItemName] = useState("");
   const [itemLink, setItemLink] = useState("");
   const [itemDescription, setItemDescription] = useState("");
+  const [itemHtml, setItemHtml] = useState("");
   const [itemPrice, setItemPrice] = useState("");
   const [itemSalePrice, setItemSalePrice] = useState("");
   const [itemOnSale, setItemOnSale] = useState(false);
@@ -98,6 +100,7 @@ export default function NewItem(props) {
       (!pageConfig.name || itemName.length > 0)
       && (!pageConfig.link || itemLink.length > 0)
       && (!pageConfig.description || itemDescription.length > 0)
+      && (!pageConfig.html || itemHtml.length > 0)
       && (!pageConfig.photo || (itemPhotos && itemPhotos.length > 0))
       && (!pageConfig.price || itemPrice > 0)
       && (!pageConfig.sale || !itemOnSale || itemSalePrice > 0)
@@ -173,6 +176,7 @@ export default function NewItem(props) {
         itemName,
         itemLink: itemLink !== "" ? itemLink : undefined,
         itemDescription: itemDescription !== "" ? itemDescription : undefined,
+        itemHtml: itemHtml !== "" ? itemHtml : undefined,
         itemPrice: itemPrice !== "" ? itemPrice : undefined,
         itemSalePrice: itemSalePrice !== "" ? itemSalePrice : undefined,
         itemOnSale,
@@ -293,6 +297,21 @@ export default function NewItem(props) {
                 </Form.Control>
               </Form.Group>
             )}
+            {pageConfig.html && pageConfig.photo && (
+              <Form.Group controlId="file">
+                <Form.Label>
+                  {`Image${pageConfig.multiplePhotos ? 's' : ''}`}
+                </Form.Label>
+                <Form.Control
+                  onChange={handleFileChange}
+                  type="file"
+                  multiple={pageConfig.multiplePhotos}
+                />
+              </Form.Group>
+            )}
+            {pageConfig.html && pageConfig.photo && itemPhotos && itemPhotos.length > 0 && (
+              <DraggablePhotosGrid updateItems={setItemPhotos} items={itemPhotos} />
+            )}
             {pageConfig.name && (
               <Form.Group controlId="itemName">
                 <Form.Label>{pageConfig.title ? 'Title' : 'Name'}</Form.Label>
@@ -320,6 +339,15 @@ export default function NewItem(props) {
                   value={itemDescription}
                   as="textarea"
                   onChange={e => setItemDescription(e.target.value)}
+                />
+              </Form.Group>
+            )}
+            {pageConfig.html && (
+              <Form.Group controlId="itemHtml">
+                <Form.Label>Content</Form.Label>
+                <WysiwygEditor
+                  value={itemHtml}
+                  onChange={setItemHtml}
                 />
               </Form.Group>
             )}
@@ -354,59 +382,61 @@ export default function NewItem(props) {
               </>
             )}
           </div>
-          <div className="right-half">
-            {pageConfig.photo && (
-              <Form.Group controlId="file">
-                <Form.Label>
-                  {`Image${pageConfig.multiplePhotos ? 's' : ''}`}
-                </Form.Label>
-                <Form.Control
-                  onChange={handleFileChange}
-                  type="file"
-                  multiple={pageConfig.multiplePhotos}
-                />
-              </Form.Group>
-            )}
-            {pageConfig.photo && itemPhotos && itemPhotos.length > 0 && (
-              <DraggablePhotosGrid updateItems={setItemPhotos} items={itemPhotos} />
-            )}
-            {pageConfig.sizes && (
-              <Form.Group controlId="itemSizes">
-                <Form.Label>Sizes</Form.Label>
-                <CreatableSelect
-                  isMulti
-                  onChange={setItemSizes}
-                  options={sizeOptions}
-                  placeholder=""
-                  value={itemSizes}
-                />
-              </Form.Group>
-            )}
-            {pageConfig.colors && (
-              <Form.Group controlId="itemColors">
-                <Form.Label>Colors</Form.Label>
-                <CreatableSelect
-                  isMulti
-                  onChange={setItemColors}
-                  options={colorOptions}
-                  placeholder=""
-                  value={itemColors}
-                />
-              </Form.Group>
-            )}
-            {pageConfig.tags && (
-              <Form.Group controlId="itemTags">
-                <Form.Label>Tags</Form.Label>
-                <CreatableSelect
-                  isMulti
-                  onChange={setItemTags}
-                  options={tagOptions}
-                  placeholder=""
-                  value={itemTags}
-                />
-              </Form.Group>
-            )}
-          </div>
+          {!pageConfig.html && (
+            <div className="right-half">
+              {pageConfig.photo && (
+                <Form.Group controlId="file">
+                  <Form.Label>
+                    {`Image${pageConfig.multiplePhotos ? 's' : ''}`}
+                  </Form.Label>
+                  <Form.Control
+                    onChange={handleFileChange}
+                    type="file"
+                    multiple={pageConfig.multiplePhotos}
+                  />
+                </Form.Group>
+              )}
+              {pageConfig.photo && itemPhotos && itemPhotos.length > 0 && (
+                <DraggablePhotosGrid updateItems={setItemPhotos} items={itemPhotos} />
+              )}
+              {pageConfig.sizes && (
+                <Form.Group controlId="itemSizes">
+                  <Form.Label>Sizes</Form.Label>
+                  <CreatableSelect
+                    isMulti
+                    onChange={setItemSizes}
+                    options={sizeOptions}
+                    placeholder=""
+                    value={itemSizes}
+                  />
+                </Form.Group>
+              )}
+              {pageConfig.colors && (
+                <Form.Group controlId="itemColors">
+                  <Form.Label>Colors</Form.Label>
+                  <CreatableSelect
+                    isMulti
+                    onChange={setItemColors}
+                    options={colorOptions}
+                    placeholder=""
+                    value={itemColors}
+                  />
+                </Form.Group>
+              )}
+              {pageConfig.tags && (
+                <Form.Group controlId="itemTags">
+                  <Form.Label>Tags</Form.Label>
+                  <CreatableSelect
+                    isMulti
+                    onChange={setItemTags}
+                    options={tagOptions}
+                    placeholder=""
+                    value={itemTags}
+                  />
+                </Form.Group>
+              )}
+            </div>
+          )}
         </div>
       </Form>
     </div>
