@@ -15,6 +15,7 @@ export default function NewItem(props) {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [itemsInCategory, setItemsInCategory] = useState([]);
   const [itemName, setItemName] = useState("");
+  const [itemLink, setItemLink] = useState("");
   const [itemDescription, setItemDescription] = useState("");
   const [itemPrice, setItemPrice] = useState("");
   const [itemSalePrice, setItemSalePrice] = useState("");
@@ -95,6 +96,7 @@ export default function NewItem(props) {
   function validatePublishForm() {
     return (
       (!pageConfig.name || itemName.length > 0)
+      && (!pageConfig.link || itemLink.length > 0)
       && (!pageConfig.description || itemDescription.length > 0)
       && (!pageConfig.photo || (itemPhotos && itemPhotos.length > 0))
       && (!pageConfig.price || itemPrice > 0)
@@ -169,6 +171,7 @@ export default function NewItem(props) {
     try {
       const newItem = await createItem({
         itemName,
+        itemLink: itemLink !== "" ? itemLink : undefined,
         itemDescription: itemDescription !== "" ? itemDescription : undefined,
         itemPrice: itemPrice !== "" ? itemPrice : undefined,
         itemSalePrice: itemSalePrice !== "" ? itemSalePrice : undefined,
@@ -297,6 +300,16 @@ export default function NewItem(props) {
                   value={itemName}
                   type="text"
                   onChange={e => !hasProhibitedCharacter(e) && setItemName(e.target.value)}
+                />
+              </Form.Group>
+            )}
+            {pageConfig.link && (
+              <Form.Group controlId="itemLink">
+                <Form.Label>Link</Form.Label>
+                <Form.Control
+                  value={itemLink}
+                  type="text"
+                  onChange={e => setItemLink(e.target.value)}
                 />
               </Form.Group>
             )}
