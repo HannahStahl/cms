@@ -292,7 +292,7 @@ export default function NewItem(props) {
             )}
             {pageConfig.name && (
               <Form.Group controlId="itemName">
-                <Form.Label>Name</Form.Label>
+                <Form.Label>{pageConfig.title ? 'Title' : 'Name'}</Form.Label>
                 <Form.Control
                   value={itemName}
                   type="text"
