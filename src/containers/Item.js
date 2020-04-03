@@ -451,10 +451,18 @@ export default function Item(props) {
                     type="file"
                     multiple={pageConfig.multiplePhotos}
                   />
+                  {itemPhotos && itemPhotos.length > 0 && (
+                    pageConfig.multiplePhotos ? (
+                      <DraggablePhotosGrid updateItems={setItemPhotos} items={itemPhotos} />
+                    ) : (
+                      <img
+                        src={itemPhotos[0].url || URL.createObjectURL(itemPhotos[0])}
+                        alt={itemPhotos[0].name}
+                        height={150}
+                      />
+                    )
+                  )}
                 </Form.Group>
-              )}
-              {pageConfig.html && pageConfig.photo && itemPhotos && itemPhotos.length > 0 && (
-                <DraggablePhotosGrid updateItems={setItemPhotos} items={itemPhotos} />
               )}
               {pageConfig.name && (
                 <Form.Group controlId="itemName">
@@ -538,10 +546,18 @@ export default function Item(props) {
                       type="file"
                       multiple={pageConfig.multiplePhotos}
                     />
+                    {itemPhotos && itemPhotos.length > 0 && (
+                      pageConfig.multiplePhotos ? (
+                        <DraggablePhotosGrid updateItems={setItemPhotos} items={itemPhotos} />
+                      ) : (
+                        <img
+                          src={itemPhotos[0].url || URL.createObjectURL(itemPhotos[0])}
+                          alt={itemPhotos[0].name}
+                          height={150}
+                        />
+                      )
+                    )}
                   </Form.Group>
-                )}
-                {!pageConfig.html && pageConfig.photo && itemPhotos && itemPhotos.length > 0 && (
-                  <DraggablePhotosGrid updateItems={setItemPhotos} items={itemPhotos} />
                 )}
                 {pageConfig.sizes && (
                   <Form.Group controlId="itemSizes">
