@@ -314,7 +314,7 @@ export default function NewItem(props) {
                     <img
                       src={itemPhotos[0].url || URL.createObjectURL(itemPhotos[0])}
                       alt={itemPhotos[0].name}
-                      height={150}
+                      height={300}
                     />
                   )
                 )}
