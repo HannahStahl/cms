@@ -94,10 +94,10 @@ export default function NewItem(props) {
 
   function validatePublishForm() {
     return (
-      itemName.length > 0
-      && itemDescription.length > 0
-      && (itemPhotos && itemPhotos.length > 0)
-      && (!pageConfig.price || (itemPrice > 0))
+      (!pageConfig.name || itemName.length > 0)
+      && (!pageConfig.description || itemDescription.length > 0)
+      && (!pageConfig.photo || (itemPhotos && itemPhotos.length > 0))
+      && (!pageConfig.price || itemPrice > 0)
       && (!pageConfig.sale || !itemOnSale || itemSalePrice > 0)
       && (!pageConfig.sizes || (itemSizes && itemSizes.length > 0))
       && (!pageConfig.colors || (itemColors && itemColors.length > 0))
@@ -290,22 +290,26 @@ export default function NewItem(props) {
                 </Form.Control>
               </Form.Group>
             )}
-            <Form.Group controlId="itemName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                value={itemName}
-                type="text"
-                onChange={e => !hasProhibitedCharacter(e) && setItemName(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId="itemDescription">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                value={itemDescription}
-                as="textarea"
-                onChange={e => setItemDescription(e.target.value)}
-              />
-            </Form.Group>
+            {pageConfig.name && (
+              <Form.Group controlId="itemName">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  value={itemName}
+                  type="text"
+                  onChange={e => !hasProhibitedCharacter(e) && setItemName(e.target.value)}
+                />
+              </Form.Group>
+            )}
+            {pageConfig.description && (
+              <Form.Group controlId="itemDescription">
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  value={itemDescription}
+                  as="textarea"
+                  onChange={e => setItemDescription(e.target.value)}
+                />
+              </Form.Group>
+            )}
             {pageConfig.price && (
               <Form.Group controlId="itemPrice">
                 <Form.Label>Price</Form.Label>
@@ -338,17 +342,19 @@ export default function NewItem(props) {
             )}
           </div>
           <div className="right-half">
-            <Form.Group controlId="file">
-              <Form.Label>
-                {`Image${pageConfig.multiplePhotos ? 's' : ''}`}
-              </Form.Label>
-              <Form.Control
-                onChange={handleFileChange}
-                type="file"
-                multiple={pageConfig.multiplePhotos}
-              />
-            </Form.Group>
-            {itemPhotos && itemPhotos.length > 0 && (
+            {pageConfig.photo && (
+              <Form.Group controlId="file">
+                <Form.Label>
+                  {`Image${pageConfig.multiplePhotos ? 's' : ''}`}
+                </Form.Label>
+                <Form.Control
+                  onChange={handleFileChange}
+                  type="file"
+                  multiple={pageConfig.multiplePhotos}
+                />
+              </Form.Group>
+            )}
+            {pageConfig.photo && itemPhotos && itemPhotos.length > 0 && (
               <DraggablePhotosGrid updateItems={setItemPhotos} items={itemPhotos} />
             )}
             {pageConfig.sizes && (
