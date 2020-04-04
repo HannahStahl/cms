@@ -9,6 +9,7 @@ import config from '../config';
 import DraggablePhotosGrid from "../components/DraggablePhotosGrid";
 import LoadingSpinner from "../components/LoadingSpinner";
 import WysiwygEditor from "../components/WysiwygEditor";
+import { hasProhibitedCharacter } from "../libs/utilsLib";
 
 export default function Item(props) {
   const [pageConfig, setPageConfig] = useState({});
@@ -377,10 +378,6 @@ export default function Item(props) {
       alert(e);
       setIsDeleting(false);
     }
-  }
-
-  function hasProhibitedCharacter(e) {
-    return e.target.value.includes('_') || e.target.value.includes('?');
   }
 
   async function updateCategoryId(newCategoryId) {

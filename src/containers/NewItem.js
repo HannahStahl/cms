@@ -7,6 +7,7 @@ import { s3Upload } from "../libs/awsLib";
 import "./NewItem.css";
 import DraggablePhotosGrid from '../components/DraggablePhotosGrid';
 import WysiwygEditor from "../components/WysiwygEditor";
+import { hasProhibitedCharacter } from "../libs/utilsLib";
 
 export default function NewItem(props) {
   const [pageConfig] = useState(
@@ -249,10 +250,6 @@ export default function NewItem(props) {
         attributeType: 'photo',
       }
     });
-  }
-
-  function hasProhibitedCharacter(e) {
-    return e.target.value.includes('_') || e.target.value.includes('?');
   }
 
   return (

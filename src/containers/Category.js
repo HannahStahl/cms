@@ -8,6 +8,7 @@ import "./Category.css";
 import DraggableItemsList from "../components/DraggableItemsList";
 import config from '../config';
 import LoadingSpinner from "../components/LoadingSpinner";
+import { hasProhibitedCharacter } from "../libs/utilsLib";
 
 export default function Category(props) {
   const [file, setFile] = useState(null);
@@ -189,10 +190,6 @@ export default function Category(props) {
         </Form.Group>
       </div>
     );
-  }
-
-  function hasProhibitedCharacter(e) {
-    return e.target.value.includes('_') || e.target.value.includes('?');
   }
 
   function renderCategoryDetails() {

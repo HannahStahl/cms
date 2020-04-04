@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import LoaderButton from "../components/LoaderButton";
 import { s3Upload } from "../libs/awsLib";
 import "./NewCategory.css";
+import { hasProhibitedCharacter } from "../libs/utilsLib";
 
 export default function NewCategory(props) {
   const [pageConfig] = useState(
@@ -73,10 +74,6 @@ export default function NewCategory(props) {
     return API.post("items-api", "/categories", {
       body: category
     });
-  }
-
-  function hasProhibitedCharacter(e) {
-    return e.target.value.includes('_') || e.target.value.includes('?');
   }
 
   return (
