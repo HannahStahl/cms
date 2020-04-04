@@ -2,7 +2,7 @@ import React from "react";
 import "./Home.css";
 import Login from "./Login";
 import LoadingSpinner from "../components/LoadingSpinner";
-import Items from "../components/Items";
+import Items from "../containers/Items";
 
 export default function Home(props) {
   function renderCards() {
