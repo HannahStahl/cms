@@ -4,10 +4,14 @@ import "./Items.css";
 import DraggableItemsList from "../components/DraggableItemsList";
 
 export default function Items(props) {
-  const itemTypePlural = window.location.pathname.split('/')[1].replace(/_/g, ' ');
-  const itemType = itemTypePlural.substring(0, itemTypePlural.length - 1);
+  let itemTypePlural;
+  let itemType;
+  if (!props.pageConfig) {
+    itemTypePlural = window.location.pathname.split('/')[1].replace(/_/g, ' ');
+    itemType = itemTypePlural.substring(0, itemTypePlural.length - 1);
+  }
   const [pageConfig] = useState(
-    props.clientConfig.find(configInList => configInList.itemType === itemType)
+    props.pageConfig || props.clientConfig.find(configInList => configInList.itemType === itemType)
   );
   const [categories, setCategories] = useState([]);
   const [items, setItems] = useState([]);
