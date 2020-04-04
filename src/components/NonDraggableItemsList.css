@@ -1,0 +1,39 @@
+.NonDraggableItemsList .item {
+  display: flex;
+  align-items: center;
+  border: solid 1px #eee;
+  padding: 20px;
+  user-select: none;
+  height: 130px;
+  min-width: 350px;
+}
+
+.NonDraggableItemsList .item-name {
+  color: #333;
+  padding-left: 40px;
+}
+
+.NonDraggableItemsList .item-name.new-item {
+  padding-left: 20px;
+}
+
+.NonDraggableItemsList .item-name:hover {
+  color: black;
+  text-decoration: none !important;
+}
+
+.NonDraggableItemsList .item-photo {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.NonDraggableItemsList .item h4.short {
+  max-width: 300px;
+}
+
+@media all and (hover: hover) {
+  .item-photo:hover, .item-name:hover {
+    cursor: pointer;
+  }
+}

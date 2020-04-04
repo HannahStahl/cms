@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { API } from "aws-amplify";
 import "./Items.css";
 import DraggableItemsList from "../components/DraggableItemsList";
+import NonDraggableItemsList from "../components/NonDraggableItemsList";
 
 export default function Items(props) {
   let itemTypePlural;
@@ -64,13 +65,23 @@ export default function Items(props) {
   function renderItemsList(items) {
     return (
       <div>
-        <DraggableItemsList
-          itemType='item'
-          itemTypePlural='items'
-          originalItems={items}
-          newItemURL={`items/new/${pageConfig.id}/uncategorized`}
-          clientConfig={pageConfig}
-        />
+        {pageConfig.sortByDate ? (
+          <NonDraggableItemsList
+            itemType='item'
+            itemTypePlural='items'
+            items={items}
+            newItemURL={`items/new/${pageConfig.id}/uncategorized`}
+            clientConfig={pageConfig}
+          />
+        ) : (
+          <DraggableItemsList
+            itemType='item'
+            itemTypePlural='items'
+            originalItems={items}
+            newItemURL={`items/new/${pageConfig.id}/uncategorized`}
+            clientConfig={pageConfig}
+          />
+        )}
       </div>
     );
   }
