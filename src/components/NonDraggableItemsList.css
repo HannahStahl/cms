@@ -28,6 +28,10 @@
   object-fit: cover;
 }
 
+.NonDraggableItemsList .item h4 {
+  margin-bottom: 0px;
+}
+
 .NonDraggableItemsList .item h4.short {
   max-width: 300px;
 }

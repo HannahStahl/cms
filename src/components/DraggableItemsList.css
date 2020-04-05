@@ -33,6 +33,10 @@
   object-fit: cover;
 }
 
+.DraggableItemsList .item h4 {
+  margin-bottom: 0px;
+}
+
 .DraggableItemsList .item h4.short {
   max-width: 300px;
 }

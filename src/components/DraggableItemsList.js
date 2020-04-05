@@ -5,6 +5,7 @@ import { API } from "aws-amplify";
 import config from '../config';
 import "./DraggableItemsList.css";
 import LoaderButton from "./LoaderButton";
+import DraftLabel from "./DraftLabel";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -91,6 +92,7 @@ export default function DraggableItemsList({
                       >
                         <h4 className={short ? 'short' : ''}>{item[`${itemType}Name`]}</h4>
                       </div>
+                      {!item[`${itemType}Published`] && <DraftLabel />}
                     </div>
                   )}
                 </Draggable>

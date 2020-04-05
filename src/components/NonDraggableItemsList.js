@@ -1,6 +1,7 @@
 import React from "react";
 import config from '../config';
 import "./NonDraggableItemsList.css";
+import DraftLabel from './DraftLabel';
 
 export default function NonDraggableItemsList({
   items, itemType, itemTypePlural, newItemURL, short, clientConfig,
@@ -43,6 +44,7 @@ export default function NonDraggableItemsList({
             >
               <h4 className={short ? 'short' : ''}>{item[`${itemType}Name`]}</h4>
             </a>
+            {!item.itemPublished && <DraftLabel />}
           </div>
         </div>
       ))}
