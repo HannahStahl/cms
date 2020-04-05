@@ -5,6 +5,19 @@ import "./NonDraggableItemsList.css";
 export default function NonDraggableItemsList({
   items, itemType, itemTypePlural, newItemURL, short, clientConfig,
 }) {
+  const sortedItems = items.sort((a, b) => {
+    if (a.itemPublished && b.itemPublished) {
+      if (a.datePublished > b.datePublished) return -1;
+      if (b.datePublished > a.datePublished) return 1;
+      return 0;
+    }
+    if (a.itemPublished) return 1;
+    if (b.itemPublished) return -1;
+    if (a.updatedAt > b.updatedAt) return -1;
+    if (b.updatedAt > a.updatedAt) return 1;
+    return 0;
+  });
+
   return (
     <div className="NonDraggableItemsList">
       <div className="item">
@@ -12,7 +25,7 @@ export default function NonDraggableItemsList({
           <h4>{`+ Create new ${itemType}`}</h4>
         </a>
       </div>
-      {items.map((item, index) => (
+      {sortedItems.map((item, index) => (
         <div key={item[`${itemType}Id`]} index={index}>
           <div className="item">
             <a href={`/${itemTypePlural}/${item[`${itemType}Id`]}`}>

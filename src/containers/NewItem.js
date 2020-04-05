@@ -182,6 +182,7 @@ export default function NewItem(props) {
         itemSalePrice: itemSalePrice !== "" ? itemSalePrice : undefined,
         itemOnSale,
         itemPublished,
+        datePublished: pageConfig.datePublished && itemPublished ? Date.now() : undefined,
         categoryId: pageConfig.categorized ? categoryId : undefined,
         itemRank: itemsInCategory.length > 0 ? (itemsInCategory[itemsInCategory.length - 1].itemRank + 1) : 0,
         cmsPageConfigId: pageConfig.id,

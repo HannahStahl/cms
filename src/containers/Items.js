@@ -65,7 +65,7 @@ export default function Items(props) {
   function renderItemsList(items) {
     return (
       <div>
-        {pageConfig.sortByDate ? (
+        {pageConfig.datePublished ? (
           <NonDraggableItemsList
             itemType='item'
             itemTypePlural='items'

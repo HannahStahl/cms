@@ -318,6 +318,17 @@ export default function Item(props) {
       itemRank = itemsInCategory.length > 0 ? (itemsInCategory[itemsInCategory.length - 1].itemRank + 1) : 0;
     }
 
+    let datePublished;
+    if (pageConfig.datePublished) {
+      if (itemPublished) {
+        if (item.itemPublished) {
+          datePublished = item.datePublished;
+        } else {
+          datePublished = Date.now();
+        }
+      }
+    }
+
     try {
       await Promise.all([
         saveItem({
@@ -329,6 +340,7 @@ export default function Item(props) {
           itemSalePrice: itemSalePrice !== "" ? itemSalePrice : undefined,
           itemOnSale,
           itemPublished,
+          datePublished,
           categoryId,
           itemRank,
           cmsPageConfigId: item.cmsPageConfigId,
