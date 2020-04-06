@@ -296,7 +296,7 @@ export default function NewItem(props) {
               </Form.Group>
             )}
             {pageConfig.html && pageConfig.photo && (
-              <Form.Group controlId="file">
+              <Form.Group controlId="image">
                 <Form.Label>
                   {`Image${pageConfig.multiplePhotos ? 's' : ''}`}
                 </Form.Label>
@@ -354,6 +354,7 @@ export default function NewItem(props) {
                 <WysiwygEditor
                   value={itemHtml}
                   onChange={setItemHtml}
+                  clientConfig={pageConfig}
                 />
               </Form.Group>
             )}
@@ -391,7 +392,7 @@ export default function NewItem(props) {
           {!pageConfig.html && (
             <div className="right-half">
               {pageConfig.photo && (
-                <Form.Group controlId="file">
+                <Form.Group controlId="image">
                   <Form.Label>
                     {`Image${pageConfig.multiplePhotos ? 's' : ''}`}
                   </Form.Label>
