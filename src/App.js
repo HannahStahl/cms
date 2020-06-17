@@ -47,9 +47,8 @@ function App(props) {
           <Navbar collapseOnSelect expand="lg" fixed="top">
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse>
-              <Nav>
-                <Nav.Link href="/">Home</Nav.Link>
-                {clientConfig.length > 1 && clientConfig.map(config => (
+              <Nav activeKey={window.location.pathname}>
+                {clientConfig.map(config => (
                   <Nav.Link key={config.id} href={`/${config.itemType.replace(/ /g, '_')}s`}>{config.itemType}s</Nav.Link>
                 ))}
               </Nav>
