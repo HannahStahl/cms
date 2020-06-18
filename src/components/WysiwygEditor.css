@@ -14,3 +14,8 @@
   margin-left: 1rem;
   margin-right: 1rem;
 }
+
+.wysiwyg-editor-content * {
+  font-family: 'Rubik', sans-serif !important;
+  color: #333 !important;
+}

@@ -43,7 +43,8 @@ export default function TextEditor(props) {
           uploadCallback: onImageUpload,
           previewImage: true,
           defaultSize: { width: '100%', height: 'auto' }
-        }
+        },
+        options: ['inline', 'blockType', 'fontSize', 'list', 'textAlign', 'link', 'embedded', 'emoji', 'image', 'remove', 'history']
       }}
     />
   );
