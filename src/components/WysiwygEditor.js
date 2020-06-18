@@ -42,9 +42,10 @@ export default function TextEditor(props) {
         image: {
           uploadCallback: onImageUpload,
           previewImage: true,
-          defaultSize: { width: '100%', height: 'auto' }
+          defaultSize: { width: '100%', height: 'auto' },
+          alignmentEnabled: false
         },
-        options: ['inline', 'blockType', 'fontSize', 'list', 'textAlign', 'link', 'embedded', 'emoji', 'image', 'remove', 'history']
+        options: ['inline', 'blockType', 'fontSize', 'list', 'textAlign', 'link', 'emoji', 'image', 'remove', 'history']
       }}
     />
   );
