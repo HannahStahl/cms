@@ -10,10 +10,6 @@
 
 .NonDraggableItemsList .item-name {
   color: #333;
-  padding-left: 40px;
-}
-
-.NonDraggableItemsList .item-name.new-item {
   padding-left: 20px;
 }
 
@@ -26,6 +22,7 @@
   width: 100px;
   height: 100px;
   object-fit: cover;
+  margin-right: 20px;
 }
 
 .NonDraggableItemsList .item h4 {

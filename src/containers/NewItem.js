@@ -17,9 +17,11 @@ export default function NewItem(props) {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [itemsInCategory, setItemsInCategory] = useState([]);
   const [itemName, setItemName] = useState("");
+  const [itemSubtitle, setItemSubtitle] = useState("");
   const [itemLink, setItemLink] = useState("");
   const [itemDescription, setItemDescription] = useState("");
   const [itemHtml, setItemHtml] = useState("");
+  const [itemPdf, setItemPdf] = useState({});
   const [itemPrice, setItemPrice] = useState("");
   const [itemSalePrice, setItemSalePrice] = useState("");
   const [itemOnSale, setItemOnSale] = useState(false);
@@ -99,9 +101,11 @@ export default function NewItem(props) {
   function validatePublishForm() {
     return (
       (!pageConfig.name || itemName.length > 0)
+      && (!pageConfig.subtitle || itemSubtitle.length > 0)
       && (!pageConfig.link || itemLink.length > 0)
       && (!pageConfig.description || itemDescription.length > 0)
       && (!pageConfig.html || itemHtml.length > 0)
+      && (!pageConfig.pdf || itemPdf.name)
       && (!pageConfig.photo || (itemPhotos && itemPhotos.length > 0))
       && (!pageConfig.price || itemPrice > 0)
       && (!pageConfig.sale || !itemOnSale || itemSalePrice > 0)
@@ -166,6 +170,8 @@ export default function NewItem(props) {
       });
     }
 
+    if (itemPdf.name) await s3Upload(itemPdf);
+
     if (itemPublished) {
       setIsSaving(true);
     } else {
@@ -175,9 +181,11 @@ export default function NewItem(props) {
     try {
       const newItem = await createItem({
         itemName,
+        itemSubtitle,
         itemLink: itemLink !== "" ? itemLink : undefined,
         itemDescription: itemDescription !== "" ? itemDescription : undefined,
         itemHtml: itemHtml !== "" ? itemHtml : undefined,
+        itemPdf: itemPdf.name !== "" ? itemPdf.name : undefined,
         itemPrice: itemPrice !== "" ? itemPrice : undefined,
         itemSalePrice: itemSalePrice !== "" ? itemSalePrice : undefined,
         itemOnSale,
@@ -328,6 +336,17 @@ export default function NewItem(props) {
                 />
               </Form.Group>
             )}
+            {pageConfig.subtitle && (
+              <Form.Group controlId="itemSubtitle">
+                <Form.Label>Subtitle</Form.Label>
+                <Form.Control
+                  value={itemSubtitle}
+                  as="textarea"
+                  className="short-textarea"
+                  onChange={e => setItemSubtitle(e.target.value)}
+                />
+              </Form.Group>
+            )}
             {pageConfig.link && (
               <Form.Group controlId="itemLink">
                 <Form.Label>Link</Form.Label>
@@ -411,6 +430,22 @@ export default function NewItem(props) {
                         height={150}
                       />
                     )
+                  )}
+                </Form.Group>
+              )}
+              {pageConfig.pdf && (
+                <Form.Group controlId="itemPdf">
+                  <Form.Label>PDF</Form.Label>
+                  <Form.Control
+                    onChange={(e) => setItemPdf(e.target.files[0])}
+                    type="file"
+                    accept="application/pdf"
+                  />
+                  {itemPdf.name && (
+                    <p className="pdf-name">
+                      <i className="fas fa-file-pdf" />
+                      {itemPdf.name}
+                    </p>
                   )}
                 </Form.Group>
               )}

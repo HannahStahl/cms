@@ -59,7 +59,7 @@ export default function DraggableItemsList({
     <div className="DraggableItemsList">
       <p className="instructions">Hold and drag to reorder.</p>
       <div className="item">
-        <div className="item-name new-item" onClick={() => onLinkClick(newItemURL)}>
+        <div className="item-name" onClick={() => onLinkClick(newItemURL)}>
           <h4>{`+ Create new ${itemType}`}</h4>
         </div>
       </div>
@@ -77,15 +77,17 @@ export default function DraggableItemsList({
                       style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
                       className="item"
                     >
-                      <div onClick={() => onLinkClick(`/${itemTypePlural}/${item[`${itemType}Id`]}`)}>
-                        <img
-                          className="item-photo"
-                          alt={item[`${itemType}Name`]}
-                          src={item[`${itemType}Photo`] ? (
-                            `${config.cloudfrontURL}/${clientConfig.userId}/${item[`${itemType}Photo`]}`
-                          ) : `${process.env.PUBLIC_URL}/placeholder.jpg`}
-                        />
-                      </div>
+                      {clientConfig.photo && (
+                        <div onClick={() => onLinkClick(`/${itemTypePlural}/${item[`${itemType}Id`]}`)}>
+                          <img
+                            className="item-photo"
+                            alt={item[`${itemType}Name`]}
+                            src={item[`${itemType}Photo`] ? (
+                              `${config.cloudfrontURL}/${clientConfig.userId}/${item[`${itemType}Photo`]}`
+                            ) : `${process.env.PUBLIC_URL}/placeholder.jpg`}
+                          />
+                        </div>
+                      )}
                       <div
                         className="item-name"
                         onClick={() => onLinkClick(`/${itemTypePlural}/${item[`${itemType}Id`]}`)}

@@ -33,10 +33,14 @@
   }
 }
 
-.NewItem form textarea {
+.NewItem form textarea:not(.short-textarea) {
   height: 200px;
 }
 
 .NewItem input[type=file]{ 
   color: transparent;
+}
+
+.NewItem .pdf-name .fa-file-pdf { 
+  margin-right: 8px;
 }

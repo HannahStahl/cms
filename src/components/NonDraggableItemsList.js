@@ -22,22 +22,24 @@ export default function NonDraggableItemsList({
   return (
     <div className="NonDraggableItemsList">
       <div className="item">
-        <a className="item-name new-item" href={newItemURL}>
+        <a className="item-name" href={newItemURL}>
           <h4>{`+ Create new ${itemType}`}</h4>
         </a>
       </div>
       {sortedItems.map((item, index) => (
         <div key={item[`${itemType}Id`]} index={index}>
           <div className="item">
-            <a href={`/${itemTypePlural}/${item[`${itemType}Id`]}`}>
-              <img
-                className="item-photo"
-                alt={item[`${itemType}Name`]}
-                src={item[`${itemType}Photo`] ? (
-                  `${config.cloudfrontURL}/${clientConfig.userId}/${item[`${itemType}Photo`]}`
-                ) : `${process.env.PUBLIC_URL}/placeholder.jpg`}
-              />
-            </a>
+            {clientConfig.photo && (
+              <a href={`/${itemTypePlural}/${item[`${itemType}Id`]}`}>
+                <img
+                  className="item-photo"
+                  alt={item[`${itemType}Name`]}
+                  src={item[`${itemType}Photo`] ? (
+                    `${config.cloudfrontURL}/${clientConfig.userId}/${item[`${itemType}Photo`]}`
+                  ) : `${process.env.PUBLIC_URL}/placeholder.jpg`}
+                />
+              </a>
+            )}
             <a
               className="item-name"
               href={`/${itemTypePlural}/${item[`${itemType}Id`]}`}
