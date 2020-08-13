@@ -171,7 +171,10 @@ export default function NewItem(props) {
       });
     }
 
-    if (itemPdf.size) await s3Upload(itemPdf);
+    let itemPdfUrl;
+    if (itemPdf.name) {
+      itemPdfUrl = await s3Upload(itemPdf);
+    }
 
     if (itemPublished) {
       setIsSaving(true);
@@ -186,7 +189,7 @@ export default function NewItem(props) {
         itemLink: itemLink !== "" ? itemLink : undefined,
         itemDescription: itemDescription !== "" ? itemDescription : undefined,
         itemHtml: itemHtml !== "" ? itemHtml : undefined,
-        itemPdf: itemPdf.name !== "" ? itemPdf.name : undefined,
+        itemPdf: itemPdfUrl,
         itemPdfLink: itemPdfLink !== "" ? itemPdfLink : undefined,
         itemPrice: itemPrice !== "" ? itemPrice : undefined,
         itemSalePrice: itemSalePrice !== "" ? itemSalePrice : undefined,

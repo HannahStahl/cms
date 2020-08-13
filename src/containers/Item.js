@@ -22,7 +22,8 @@ export default function Item(props) {
   const [itemLink, setItemLink] = useState("");
   const [itemDescription, setItemDescription] = useState("");
   const [itemHtml, setItemHtml] = useState("");
-  const [itemPdf, setItemPdf] = useState({});
+  const [itemPdf, setItemPdf] = useState("");
+  const [newItemPdf, setNewItemPdf] = useState({});
   const [itemPdfLink, setItemPdfLink] = useState("");
   const [itemPrice, setItemPrice] = useState("");
   const [itemSalePrice, setItemSalePrice] = useState("");
@@ -145,7 +146,7 @@ export default function Item(props) {
         setItemLink(itemLink || "");
         setItemDescription(itemDescription || "");
         setItemHtml(itemHtml || "");
-        setItemPdf(itemPdf ? { name: itemPdf } : {});
+        setItemPdf(itemPdf || "");
         setItemPdfLink(itemPdfLink || "");
         setItemPrice(itemPrice || "");
         setItemSalePrice(itemSalePrice || "");
@@ -203,7 +204,7 @@ export default function Item(props) {
       && (!pageConfig.link || itemLink.length > 0)
       && (!pageConfig.description || itemDescription.length > 0)
       && (!pageConfig.html || itemHtml.length > 0)
-      && (!pageConfig.pdf || itemPdf.name || itemPdfLink.length > 0)
+      && (!pageConfig.pdf || newItemPdf.name || itemPdf.length > 0 || itemPdfLink.length > 0)
       && (!pageConfig.photo || (itemPhotos && itemPhotos.length > 0))
       && (!pageConfig.price || itemPrice > 0)
       && (!pageConfig.sale || !itemOnSale || itemSalePrice > 0)
@@ -318,7 +319,10 @@ export default function Item(props) {
       });
     }
 
-    if (itemPdf.size) await s3Upload(itemPdf);
+    let itemPdfUrl;
+    if (newItemPdf.name) {
+      itemPdfUrl = await s3Upload(newItemPdf);
+    }
 
     if (itemPublished) {
       setIsSaving(true);
@@ -350,7 +354,7 @@ export default function Item(props) {
           itemLink: itemLink !== "" ? itemLink : undefined,
           itemDescription: itemDescription !== "" ? itemDescription : undefined,
           itemHtml: itemHtml !== "" ? itemHtml : undefined,
-          itemPdf: itemPdf.name !== "" ? itemPdf.name : undefined,
+          itemPdf: itemPdfUrl || (itemPdf !== "" ? itemPdf : undefined),
           itemPdfLink: itemPdfLink !== "" ? itemPdfLink : undefined,
           itemPrice: itemPrice !== "" ? itemPrice : undefined,
           itemSalePrice: itemSalePrice !== "" ? itemSalePrice : undefined,
@@ -411,6 +415,15 @@ export default function Item(props) {
   async function updateCategoryId(newCategoryId) {
     setCategoryId(newCategoryId);
     setItemsInCategory(await API.get("items-api", `/items/${newCategoryId}`));
+  }
+
+  let pdfName;
+  if (newItemPdf.name) {
+    pdfName = newItemPdf.name;
+    pdfName = pdfName.length > 30 ? `${pdfName.substr(0, 30)}...` : pdfName;
+  } else if (itemPdf.length > 0) {
+    pdfName = itemPdf.split(/-(.+)/)[1];
+    pdfName = pdfName.length > 30 ? `${pdfName.substr(0, 30)}...` : pdfName;
   }
 
   return (
@@ -609,14 +622,14 @@ export default function Item(props) {
                     <Form.Group>
                       <Form.Label>PDF (option 2: file upload)</Form.Label>
                       <Form.Control
-                        onChange={(e) => setItemPdf(e.target.files[0])}
+                        onChange={(e) => setNewItemPdf(e.target.files[0])}
                         type="file"
                         accept="application/pdf"
                       />
-                      {itemPdf.name && (
+                      {pdfName && (
                         <p className="pdf-name">
                           <i className="fas fa-file-pdf" />
-                          {itemPdf.name.length > 30 ? `${itemPdf.name.substr(0, 30)}...` : itemPdf.name}
+                          {pdfName}
                         </p>
                       )}
                     </Form.Group>
