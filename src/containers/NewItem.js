@@ -22,6 +22,7 @@ export default function NewItem(props) {
   const [itemDescription, setItemDescription] = useState("");
   const [itemHtml, setItemHtml] = useState("");
   const [itemPdf, setItemPdf] = useState({});
+  const [itemPdfLink, setItemPdfLink] = useState("");
   const [itemPrice, setItemPrice] = useState("");
   const [itemSalePrice, setItemSalePrice] = useState("");
   const [itemOnSale, setItemOnSale] = useState(false);
@@ -105,7 +106,7 @@ export default function NewItem(props) {
       && (!pageConfig.link || itemLink.length > 0)
       && (!pageConfig.description || itemDescription.length > 0)
       && (!pageConfig.html || itemHtml.length > 0)
-      && (!pageConfig.pdf || itemPdf.name)
+      && (!pageConfig.pdf || itemPdf.name || itemPdfLink.length > 0)
       && (!pageConfig.photo || (itemPhotos && itemPhotos.length > 0))
       && (!pageConfig.price || itemPrice > 0)
       && (!pageConfig.sale || !itemOnSale || itemSalePrice > 0)
@@ -170,7 +171,7 @@ export default function NewItem(props) {
       });
     }
 
-    if (itemPdf.name) await s3Upload(itemPdf);
+    if (itemPdf.size) await s3Upload(itemPdf);
 
     if (itemPublished) {
       setIsSaving(true);
@@ -186,6 +187,7 @@ export default function NewItem(props) {
         itemDescription: itemDescription !== "" ? itemDescription : undefined,
         itemHtml: itemHtml !== "" ? itemHtml : undefined,
         itemPdf: itemPdf.name !== "" ? itemPdf.name : undefined,
+        itemPdfLink: itemPdfLink !== "" ? itemPdfLink : undefined,
         itemPrice: itemPrice !== "" ? itemPrice : undefined,
         itemSalePrice: itemSalePrice !== "" ? itemSalePrice : undefined,
         itemOnSale,
@@ -434,20 +436,30 @@ export default function NewItem(props) {
                 </Form.Group>
               )}
               {pageConfig.pdf && (
-                <Form.Group controlId="itemPdf">
-                  <Form.Label>PDF</Form.Label>
-                  <Form.Control
-                    onChange={(e) => setItemPdf(e.target.files[0])}
-                    type="file"
-                    accept="application/pdf"
-                  />
-                  {itemPdf.name && (
-                    <p className="pdf-name">
-                      <i className="fas fa-file-pdf" />
-                      {itemPdf.name}
-                    </p>
-                  )}
-                </Form.Group>
+                <>
+                  <Form.Group controlId="itemPdf">
+                    <Form.Label>PDF (option 1: URL)</Form.Label>
+                    <Form.Control
+                      value={itemPdfLink}
+                      type="text"
+                      onChange={e => setItemPdfLink(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Label>PDF (option 2: file upload)</Form.Label>
+                    <Form.Control
+                      onChange={(e) => setItemPdf(e.target.files[0])}
+                      type="file"
+                      accept="application/pdf"
+                    />
+                    {itemPdf.name && (
+                      <p className="pdf-name">
+                        <i className="fas fa-file-pdf" />
+                        {itemPdf.name}
+                      </p>
+                    )}
+                  </Form.Group>
+                </>
               )}
               {pageConfig.sizes && (
                 <Form.Group controlId="itemSizes">
