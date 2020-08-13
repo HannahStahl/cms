@@ -616,7 +616,7 @@ export default function Item(props) {
                       {itemPdf.name && (
                         <p className="pdf-name">
                           <i className="fas fa-file-pdf" />
-                          {itemPdf.name}
+                          {itemPdf.name.length > 30 ? `${itemPdf.name.substr(0, 30)}...` : itemPdf.name}
                         </p>
                       )}
                     </Form.Group>
