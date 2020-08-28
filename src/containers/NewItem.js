@@ -18,6 +18,7 @@ export default function NewItem(props) {
   const [itemsInCategory, setItemsInCategory] = useState([]);
   const [itemName, setItemName] = useState("");
   const [itemSubtitle, setItemSubtitle] = useState("");
+  const [itemSourceDate, setItemSourceDate] = useState("");
   const [itemLink, setItemLink] = useState("");
   const [itemDescription, setItemDescription] = useState("");
   const [itemHtml, setItemHtml] = useState("");
@@ -103,6 +104,7 @@ export default function NewItem(props) {
     return (
       (!pageConfig.name || itemName.length > 0)
       && (!pageConfig.subtitle || itemSubtitle.length > 0)
+      && (!pageConfig.sourceDate || itemSourceDate.length > 0)
       && (!pageConfig.link || itemLink.length > 0)
       && (!pageConfig.description || itemDescription.length > 0)
       && (!pageConfig.html || itemHtml.length > 0)
@@ -186,6 +188,7 @@ export default function NewItem(props) {
       const newItem = await createItem({
         itemName,
         itemSubtitle,
+        itemSourceDate,
         itemLink: itemLink !== "" ? itemLink : undefined,
         itemDescription: itemDescription !== "" ? itemDescription : undefined,
         itemHtml: itemHtml !== "" ? itemHtml : undefined,
@@ -349,6 +352,17 @@ export default function NewItem(props) {
                   as="textarea"
                   className="short-textarea"
                   onChange={e => setItemSubtitle(e.target.value)}
+                />
+              </Form.Group>
+            )}
+            {pageConfig.sourceDate && (
+              <Form.Group controlId="itemSourceDate">
+                <Form.Label>Source and Date</Form.Label>
+                <Form.Control
+                  value={itemSourceDate}
+                  as="textarea"
+                  className="short-textarea"
+                  onChange={e => setItemSourceDate(e.target.value)}
                 />
               </Form.Group>
             )}

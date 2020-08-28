@@ -19,6 +19,7 @@ export default function Item(props) {
   const [itemsInCategory, setItemsInCategory] = useState([]);
   const [itemName, setItemName] = useState("");
   const [itemSubtitle, setItemSubtitle] = useState("");
+  const [itemSourceDate, setItemSourceDate] = useState("");
   const [itemLink, setItemLink] = useState("");
   const [itemDescription, setItemDescription] = useState("");
   const [itemHtml, setItemHtml] = useState("");
@@ -118,6 +119,7 @@ export default function Item(props) {
           categoryId,
           itemName,
           itemSubtitle,
+          itemSourceDate,
           itemLink,
           itemDescription,
           itemHtml,
@@ -143,6 +145,7 @@ export default function Item(props) {
         setCategoryId(categoryId);
         setItemName(itemName || "");
         setItemSubtitle(itemSubtitle || "");
+        setItemSourceDate(itemSourceDate || "");
         setItemLink(itemLink || "");
         setItemDescription(itemDescription || "");
         setItemHtml(itemHtml || "");
@@ -201,6 +204,7 @@ export default function Item(props) {
     return (
       (!pageConfig.name || itemName.length > 0)
       && (!pageConfig.subtitle || itemSubtitle.length > 0)
+      && (!pageConfig.sourceDate || itemSourceDate.length > 0)
       && (!pageConfig.link || itemLink.length > 0)
       && (!pageConfig.description || itemDescription.length > 0)
       && (!pageConfig.html || itemHtml.length > 0)
@@ -351,6 +355,7 @@ export default function Item(props) {
         saveItem({
           itemName,
           itemSubtitle,
+          itemSourceDate,
           itemLink: itemLink !== "" ? itemLink : undefined,
           itemDescription: itemDescription !== "" ? itemDescription : undefined,
           itemHtml: itemHtml !== "" ? itemHtml : undefined,
@@ -523,6 +528,17 @@ export default function Item(props) {
                   />
                 </Form.Group>
               )}
+              {pageConfig.sourceDate && (
+                <Form.Group controlId="itemSourceDate">
+                  <Form.Label>Source and Date</Form.Label>
+                  <Form.Control
+                    value={itemSourceDate}
+                    as="textarea"
+                    className="short-textarea"
+                    onChange={e => setItemSourceDate(e.target.value)}
+                  />
+                </Form.Group>
+              )}
               {pageConfig.link && (
                 <Form.Group controlId="itemLink">
                   <Form.Label>Link</Form.Label>
@@ -612,7 +628,7 @@ export default function Item(props) {
                 {pageConfig.pdf && (
                   <>
                     <Form.Group controlId="itemPdf">
-                      <Form.Label>PDF (option 1: URL)</Form.Label>
+                      <Form.Label>Article URL</Form.Label>
                       <Form.Control
                         value={itemPdfLink}
                         type="text"
@@ -620,7 +636,7 @@ export default function Item(props) {
                       />
                     </Form.Group>
                     <Form.Group>
-                      <Form.Label>PDF (option 2: file upload)</Form.Label>
+                      <Form.Label>-or- Poster PDF</Form.Label>
                       <Form.Control
                         onChange={(e) => setNewItemPdf(e.target.files[0])}
                         type="file"
