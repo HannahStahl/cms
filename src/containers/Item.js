@@ -203,8 +203,6 @@ export default function Item(props) {
   function validatePublishForm() {
     return (
       (!pageConfig.name || itemName.length > 0)
-      && (!pageConfig.subtitle || itemSubtitle.length > 0)
-      && (!pageConfig.sourceDate || itemSourceDate.length > 0)
       && (!pageConfig.link || itemLink.length > 0)
       && (!pageConfig.description || itemDescription.length > 0)
       && (!pageConfig.html || itemHtml.length > 0)
@@ -354,8 +352,8 @@ export default function Item(props) {
       await Promise.all([
         saveItem({
           itemName,
-          itemSubtitle,
-          itemSourceDate,
+          itemSubtitle: itemSubtitle !== "" ? itemSubtitle : undefined,
+          itemSourceDate: itemSourceDate !== "" ? itemSourceDate : undefined,
           itemLink: itemLink !== "" ? itemLink : undefined,
           itemDescription: itemDescription !== "" ? itemDescription : undefined,
           itemHtml: itemHtml !== "" ? itemHtml : undefined,
