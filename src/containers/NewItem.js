@@ -453,7 +453,7 @@ export default function NewItem(props) {
               {pageConfig.pdf && (
                 <>
                   <Form.Group controlId="itemPdf">
-                    <Form.Label>PDF (option 1: URL)</Form.Label>
+                    <Form.Label>Article URL</Form.Label>
                     <Form.Control
                       value={itemPdfLink}
                       type="text"
@@ -461,7 +461,7 @@ export default function NewItem(props) {
                     />
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label>PDF (option 2: file upload)</Form.Label>
+                    <Form.Label>-or- Poster PDF</Form.Label>
                     <Form.Control
                       onChange={(e) => setItemPdf(e.target.files[0])}
                       type="file"
