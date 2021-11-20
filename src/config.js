@@ -41,7 +41,4 @@ const config = process.env.REACT_APP_STAGE === 'prod'
   ? prod
   : dev;
 
-export default {
-  // Add common config values here
-  ...config
-};
+export default config;
